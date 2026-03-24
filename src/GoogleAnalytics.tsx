@@ -1,12 +1,20 @@
 import { useEffect } from "react";
 
-const GOOGLE_ANALYTICS_ID = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
+const GOOGLE_TAG_MANAGER_ID = import.meta.env.VITE_GOOGLE_TAG_MANAGER_ID;
 
 const GoogleAnalytics = () => {
     useEffect(() => {
         const script = document.createElement("script");
-        script.src = `https://www.googletagmanager.com/gtm.js?id=${GOOGLE_ANALYTICS_ID}`;
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_MANAGER_ID}`;
         document.head.appendChild(script);
+
+        const dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", GOOGLE_TAG_MANAGER_ID);
 
         return () => {
             script.remove();
