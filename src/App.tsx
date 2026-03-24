@@ -1,10 +1,10 @@
+import GoogleAnalytics from "./GoogleAnalytics";
 import UnderConstruction from "./UnderConstruction";
-import { Analytics } from "@vercel/analytics/next";
 
 function App() {
   return (
     <>
-      <Analytics />
+      <GoogleAnalytics />
       <UnderConstruction />
     </>
   );
