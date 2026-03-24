@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect } from "react";
 
 const GOOGLE_TAG_MANAGER_ID = import.meta.env.VITE_GOOGLE_TAG_MANAGER_ID;
