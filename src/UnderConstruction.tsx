@@ -13,7 +13,6 @@ const UnderConstruction = () => {
                 </div>
             </div>
 
-            {/* Title */}
             <h1
                 className="text-2xl md:text-4xl font-bold mb-4"
                 data-text="[ SYSTEM STATUS: UNDER CONSTRUCTION ]"
