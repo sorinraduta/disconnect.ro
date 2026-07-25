@@ -1,40 +1,130 @@
 @import "tailwindcss";
 
+@theme {
+  --color-accent: #00ff41;
+  --color-bg-dark: #0a0a0a;
+  --color-bg-darker: #050505;
+  --color-bg-light: #f9f9f7;
+  --color-text-primary: #0f0f0f;
+  --color-text-light: #e8e8e6;
+  --color-text-muted: #6b7280;
+  --color-border-dark: #1e1e1e;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Menlo", "Monaco", "Consolas", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* ── Existing animations (kept) ── */
 @keyframes matrix-flicker {
   0%,
   100% {
     opacity: 1;
     text-shadow: 0 0 8px #00ff41, 0 0 12px rgba(0, 255, 65, 0.5);
   }
-  5% {
-    opacity: 0.3;
-  }
+  5% { opacity: 0.3; }
   10% {
     opacity: 1;
     text-shadow: 0 0 10px #00ff41, 0 0 15px rgba(0, 255, 65, 0.7);
   }
-  40% {
-    opacity: 0.8;
-    text-shadow: 0 0 8px #00ff41;
-  }
+  40% { opacity: 0.8; text-shadow: 0 0 8px #00ff41; }
   50% {
     opacity: 1;
     text-shadow: 0 0 10px #00ff41, 0 0 13px rgba(0, 255, 65, 0.6);
   }
-  60% {
-    opacity: 0.5;
-  }
-  70% {
-    opacity: 1;
-    text-shadow: 0 0 9px #00ff41;
-  }
-  90% {
-    opacity: 0.8;
-  }
+  60% { opacity: 0.5; }
+  70% { opacity: 1; text-shadow: 0 0 9px #00ff41; }
+  90% { opacity: 0.8; }
 }
 
 .animate-blink {
   animation: matrix-flicker 2s infinite ease-in-out;
   font-family: monospace;
   color: #00ff41;
+}
+
+/* ── Cursor blink ── */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.animate-cursor { animation: cursor-blink 1s step-end infinite; }
+
+/* ── CTA glow ── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(0, 255, 65, 0.5); }
+  50%       { box-shadow: 0 0 22px rgba(0, 255, 65, 0.9), 0 0 40px rgba(0, 255, 65, 0.25); }
+}
+.animate-glow { animation: glow-pulse 2.5s ease-in-out infinite; }
+
+/* ── Scanlines overlay ── */
+.scanlines { position: relative; overflow: hidden; }
+.scanlines::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.012) 2px,
+    rgba(0, 255, 65, 0.012) 4px
+  );
+  z-index: 1;
+}
+
+/* ── Dot grid texture (for dark sections) ── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Terminal stagger animation ── */
+@keyframes terminal-appear {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.terminal-line {
+  animation: terminal-appear 0.35s ease-out both;
+  opacity: 0;
+}
+.terminal-line:nth-child(1) { animation-delay: 0.3s; }
+.terminal-line:nth-child(2) { animation-delay: 0.75s; }
+.terminal-line:nth-child(3) { animation-delay: 1.2s; }
+.terminal-line:nth-child(4) { animation-delay: 1.6s; }
+.terminal-line:nth-child(5) { animation-delay: 2.0s; }
+.terminal-line:nth-child(6) { animation-delay: 2.4s; }
+.terminal-line:nth-child(7) { animation-delay: 2.8s; }
+
+/* ── Section fade-in on scroll (JS-free baseline) ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Service card hover ── */
+.service-card {
+  transition: border-left-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  border-left: 3px solid transparent;
+}
+.service-card:hover {
+  border-left-color: #00ff41;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ── Pricing card hover (non-highlighted) ── */
+.pricing-card {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.pricing-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+.pricing-card-highlight:hover {
+  transform: translateY(-3px);
 }
