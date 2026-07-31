@@ -25,10 +25,17 @@ const UnderConstruction = () => {
             <div className="bg-green-400 h-0.5 w-32 mb-6 animate-pulse" />
 
             {/* Message */}
-            <p className="text-sm md:text-base text-green-300 max-w-md mb-8">
-                This area of the system is currently being assembled by our
-                robotic dev unit. Come back soon for the finished interface.
+            <p className="text-sm md:text-base text-green-300 max-w-md mb-6">
+                We're building something new. In the meantime, let's talk.
             </p>
+
+            {/* Contact */}
+            <a
+                href="mailto:sorin@disconnect.ro"
+                className="text-sm md:text-base text-green-400 hover:text-green-300 transition-colors underline underline-offset-4 mb-8"
+            >
+                sorin@disconnect.ro
+            </a>
 
             {/* Terminal Cursor Messages */}
             <div className="text-green-500 text-xs md:text-sm flex flex-col items-start bg-black/30 p-3 border border-green-400/20 rounded w-full max-w-md font-mono">
