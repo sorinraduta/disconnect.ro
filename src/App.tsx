@@ -1,11 +1,11 @@
 import GoogleAnalytics from "./GoogleAnalytics";
-import UnderConstruction from "./UnderConstruction";
+import Landing from "./Landing";
 
 function App() {
   return (
     <>
       <GoogleAnalytics />
-      <UnderConstruction />
+      <Landing />
     </>
   );
 }
