@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MatrixRain from "./MatrixRain";
 
-const EMAIL = "sorin@disconnect.ro";
+const EMAIL = "contact@disconnect.ro";
 
 const SERVICES = [
     {
