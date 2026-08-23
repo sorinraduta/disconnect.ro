@@ -42,11 +42,24 @@ const SERVICES = [
             "Print & packaging",
         ],
     },
+    {
+        id: "04",
+        code: "./custom-development",
+        title: "CUSTOM DEVELOPMENT",
+        body: "Software built around how your business actually works — internal tools, integrations and automations off-the-shelf software can't cover.",
+        stack: [
+            "Internal tools",
+            "API integrations",
+            "Automation",
+            "Custom platforms",
+            "Legacy migration",
+        ],
+    },
 ];
 
 const BOOT_LINES = [
     "> mounting /dev/disconnect ............ OK",
-    "> loading services [web · marketing · design] ... OK",
+    "> loading services [web · marketing · design · custom] ... OK",
     "> uplink established ................. READY",
 ];
 
@@ -149,7 +162,7 @@ const Landing = () => {
                         ls ./services
                     </h2>
 
-                    <div className="grid gap-px overflow-hidden border border-green-400/20 bg-green-400/20 sm:grid-cols-3">
+                    <div className="grid gap-px overflow-hidden border border-green-400/20 bg-green-400/20 sm:grid-cols-2 lg:grid-cols-4">
                         {SERVICES.map((service) => (
                             <article
                                 key={service.id}
@@ -211,7 +224,7 @@ const Landing = () => {
                 {/* Footer */}
                 <footer className="flex flex-col gap-2 border-t border-green-400/20 py-5 text-[10px] uppercase tracking-[0.2em] text-green-500/50 sm:flex-row sm:items-center sm:justify-between sm:text-[11px]">
                     <span>© {new Date().getFullYear()} disconnect.ro</span>
-                    <span>web development · marketing · design</span>
+                    <span>web development · marketing · design · custom development</span>
                 </footer>
             </div>
         </div>
