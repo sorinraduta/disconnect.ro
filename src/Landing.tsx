@@ -151,7 +151,7 @@ const Landing = () => {
                             onClick={copyEmail}
                             className="border border-green-400/20 px-5 py-3 text-xs tracking-wider text-green-300 transition-colors hover:border-green-400/60 hover:text-green-200 sm:text-sm"
                         >
-                            {copied ? "copied to clipboard" : EMAIL}
+                            {copied ? "copied to clipboard" : "copy email"}
                         </button>
                     </div>
                 </section>
