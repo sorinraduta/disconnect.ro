@@ -92,7 +92,7 @@ const Landing = () => {
 
                 {/* Footer */}
                 <footer className="py-5 text-center text-[10px] uppercase tracking-[0.2em] text-green-500/50 sm:text-[11px]">
-                    © {new Date().getFullYear()} disconnect.ro
+                    copyright © {new Date().getFullYear()} disconnect.ro
                 </footer>
             </div>
         </div>
