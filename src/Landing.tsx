@@ -59,7 +59,7 @@ const Landing = () => {
                 {/* Center */}
                 <main className="flex flex-1 flex-col items-center justify-center py-16 text-center">
                     <p className="mb-5 text-[11px] uppercase tracking-[0.3em] text-green-500/70 sm:text-xs">
-                        [ digital studio · remote / worldwide ]
+                        [ digital studio ]
                     </p>
 
                     <h1
