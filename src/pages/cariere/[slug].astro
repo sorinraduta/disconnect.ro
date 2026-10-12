@@ -1,0 +1,13 @@
+---
+import { entrySlug, getRoles } from "~/lib/content";
+import RoleView from "~/views/RoleView.astro";
+
+export async function getStaticPaths() {
+    const roles = await getRoles("ro");
+    return roles.map((role) => ({ params: { slug: entrySlug(role) }, props: { role } }));
+}
+
+const { role } = Astro.props;
+---
+
+<RoleView role={role} />

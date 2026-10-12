@@ -1,0 +1,107 @@
+---
+import { render } from "astro:content";
+import CtaBand from "~/components/CtaBand.astro";
+import PostCard from "~/components/PostCard.astro";
+import { path } from "~/config/routes";
+import { formatTitle } from "~/config/seo";
+import { formatDate, useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+import { entryLang, entrySlug, getPosts, postPath, readingMinutes, translatedAlternates, wordCount, type Post } from "~/lib/content";
+import { blogPosting } from "~/lib/schema";
+
+interface Props {
+    post: Post;
+}
+
+const { post } = Astro.props;
+const lang = entryLang(post);
+const t = useTranslations(lang);
+const { Content } = await render(post);
+const pathname = postPath(post);
+const image = `/og/${lang}/blog/${entrySlug(post)}.png`;
+const { title, description, published, updated, tags } = post.data;
+
+const all = await getPosts();
+const alternates = translatedAlternates(post, all, postPath);
+const more = all.filter((other) => entryLang(other) === lang && other.id !== post.id).slice(0, 2);
+
+const copy = {
+    ro: { more: "Mai citește" },
+    en: { more: "Keep reading" },
+}[lang];
+---
+
+<Base
+    lang={lang}
+    title={formatTitle({ title })}
+    description={description}
+    alternates={alternates}
+    image={image}
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: t.nav.blog, href: path("blog", lang) },
+        { name: title, href: pathname },
+    ]}
+    article={{ published, updated, tags }}
+    schema={[
+        blogPosting({
+            lang,
+            pathname,
+            title,
+            description,
+            image,
+            published,
+            updated,
+            tags,
+            wordCount: wordCount(post.body),
+        }),
+    ]}
+>
+    <article>
+        <header class="container-x flex flex-col gap-6 pt-10 pb-12 md:pt-16">
+            <ul class="flex flex-wrap gap-2">
+                {tags.map((tag) => <li class="chip font-mono text-xs">{tag}</li>)}
+            </ul>
+            <h1 class="display max-w-5xl text-4xl sm:text-5xl lg:text-6xl">{title}</h1>
+            <p class="max-w-3xl text-xl text-muted">{description}</p>
+            <p class="flex flex-wrap gap-x-3 font-mono text-sm text-muted">
+                <span>
+                    {t.published}{" "}
+                    <time datetime={published.toISOString()}>{formatDate(published, lang)}</time>
+                </span>
+                {
+                    updated && (
+                        <span>
+                            · {t.updated} <time datetime={updated.toISOString()}>{formatDate(updated, lang)}</time>
+                        </span>
+                    )
+                }
+                <span>· {t.readingTime(readingMinutes(post.body))}</span>
+            </p>
+        </header>
+        <div class="container-x border-t border-line pt-12">
+            <div class="prose mx-auto">
+                <Content />
+            </div>
+        </div>
+    </article>
+
+    {
+        more.length > 0 && (
+            <section class="container-x pt-24" aria-labelledby="more-title">
+                <h2 id="more-title" class="display text-3xl sm:text-4xl">
+                    {copy.more}
+                </h2>
+                <ul class="mt-10 grid gap-x-6 gap-y-12 md:grid-cols-2">
+                    {more.map((other, index) => (
+                        <li>
+                            <PostCard lang={lang} post={other} variant={index + 1} headingLevel="h3" />
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        )
+    }
+
+    <CtaBand lang={lang} />
+</Base>

@@ -1,0 +1,89 @@
+---
+import { hasAnalytics, site } from "~/config/site";
+import { operator } from "~/lib/legal";
+
+const op = operator();
+const { googleAnalyticsId, metaPixelId, tiktokPixelId } = site.analytics;
+---
+
+<p>
+    Protejarea datelor tale este importantă pentru noi. Această politică explică ce date personale colectăm prin
+    <strong>{op.domain}</strong>, de ce le colectăm, cât timp le păstrăm și ce drepturi ai, conform Regulamentului (UE) 2016/679 (GDPR).
+</p>
+
+<h2>1. Operatorul datelor</h2>
+<p>
+    Operatorul datelor este <strong>{op.name}</strong>{op.vatId && <>, CUI {op.vatId}</>}{op.registryNumber && <>, nr. Reg. Com. {op.registryNumber}</>}{op.address && <>, cu sediul în {op.address}</>}. Pentru orice întrebare legată de date ne poți scrie la <a href={`mailto:${op.email}`}>{op.email}</a>.
+</p>
+
+<h2>2. Ce date colectăm</h2>
+<ul>
+    <li><strong>Formularul de contact:</strong> nume, email, telefon și companie (opționale), serviciile care te interesează și mesajul tău.</li>
+    <li><strong>Email, telefon sau WhatsApp:</strong> datele pe care alegi să ni le trimiți direct.</li>
+    <li><strong>Date tehnice:</strong> adresa IP și informații despre browser, înregistrate temporar de furnizorul de găzduire pentru securitate și funcționare.</li>
+    {hasAnalytics && <li><strong>Date de analiză și marketing:</strong> doar dacă accepți cookie-urile, informații despre cum folosești site-ul (pagini vizitate, durata vizitei, dispozitiv).</li>}
+</ul>
+
+<h2>3. De ce le folosim și pe ce temei</h2>
+<table>
+    <thead>
+        <tr><th>Scop</th><th>Temei legal</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Să răspundem la mesajul tău și să-ți trimitem o ofertă</td><td>Demersuri înainte de încheierea unui contract (art. 6 alin. 1 lit. b)</td></tr>
+        <tr><td>Securitatea site-ului și prevenirea spam-ului</td><td>Interes legitim (art. 6 alin. 1 lit. f)</td></tr>
+        {hasAnalytics && <tr><td>Statistici de utilizare și măsurarea campaniilor</td><td>Consimțământ (art. 6 alin. 1 lit. a)</td></tr>}
+        <tr><td>Obligații legale (de ex. contabile, dacă devii client)</td><td>Obligație legală (art. 6 alin. 1 lit. c)</td></tr>
+    </tbody>
+</table>
+
+<h2>4. Cât timp păstrăm datele</h2>
+<p>
+    Mesajele primite prin formular sau email le păstrăm cel mult 24 de luni de la ultima comunicare, dacă nu devii client. Dacă încheiem un contract, datele se păstrează pe durata acestuia și apoi cât cere legea. Datele tehnice de pe server se șterg automat după o perioadă scurtă.{hasAnalytics && <> Datele de analiză se păstrează cel mult 14 luni.</>}
+</p>
+
+<h2>5. Cui transmitem datele</h2>
+<p>Nu vindem datele tale. Le transmitem doar furnizorilor care ne ajută să funcționăm:</p>
+<ul>
+    <li><strong>Vercel Inc.</strong> — găzduirea site-ului;</li>
+    <li><strong>Resend</strong> — livrarea mesajelor din formularul de contact;</li>
+    {googleAnalyticsId && <li><strong>Google Ireland Ltd.</strong> — Google Analytics, doar cu acordul tău;</li>}
+    {metaPixelId && <li><strong>Meta Platforms Ireland Ltd.</strong> — Meta Pixel, doar cu acordul tău;</li>}
+    {tiktokPixelId && <li><strong>TikTok Technology Ltd.</strong> — TikTok Pixel, doar cu acordul tău;</li>}
+</ul>
+<p>
+    Unii furnizori pot prelucra date în afara Spațiului Economic European. În aceste cazuri transferul se face pe baza
+    deciziilor de adecvare ale Comisiei Europene (de ex. EU-US Data Privacy Framework) sau a clauzelor contractuale standard.
+</p>
+
+<h2>6. Cookie-uri și stocare locală</h2>
+<ul>
+    <li><strong>Strict necesare:</strong> salvăm în browser preferința de temă (luminoasă/întunecată) și alegerea ta privind cookie-urile. Acestea nu te identifică și nu necesită consimțământ.</li>
+    {hasAnalytics && <li><strong>Analiză și marketing:</strong> se încarcă doar după ce apeși „Accept” în bannerul de cookie-uri. Îți poți schimba oricând alegerea din linkul „Setări cookie” din subsolul site-ului.</li>}
+</ul>
+
+<h2>7. Drepturile tale</h2>
+<p>Ai dreptul:</p>
+<ul>
+    <li>să afli ce date avem despre tine și să primești o copie (acces);</li>
+    <li>să ceri corectarea datelor inexacte (rectificare);</li>
+    <li>să ceri ștergerea datelor (dreptul de a fi uitat);</li>
+    <li>să restricționezi prelucrarea sau să te opui acesteia;</li>
+    <li>să primești datele într-un format portabil (portabilitate);</li>
+    <li>să îți retragi oricând consimțământul, fără a afecta prelucrările anterioare.</li>
+</ul>
+<p>
+    Pentru oricare dintre acestea scrie-ne la <a href={`mailto:${op.email}`}>{op.email}</a>. Răspundem în cel mult o lună.
+    Ai și dreptul să depui o plângere la Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal
+    (<a href="https://www.dataprotection.ro" rel="noopener">ANSPDCP</a>).
+</p>
+
+<h2>8. Securitate</h2>
+<p>
+    Site-ul folosește exclusiv conexiuni criptate (HTTPS). Accesul la date este limitat la persoanele care au nevoie de ele pentru a-ți răspunde.
+</p>
+
+<h2>9. Modificări</h2>
+<p>
+    Putem actualiza această politică atunci când se schimbă modul în care prelucrăm datele. Data ultimei actualizări este afișată mai sus.
+</p>

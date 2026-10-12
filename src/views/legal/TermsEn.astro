@@ -1,0 +1,59 @@
+---
+import { path } from "~/config/routes";
+import { operator } from "~/lib/legal";
+
+const op = operator();
+---
+
+<p>
+    These terms set out the rules for using <strong>{op.domain}</strong>. By accessing and using the website you accept the terms
+    below. If you do not agree with them, please do not use the website.
+</p>
+
+<h2>1. Who we are</h2>
+<p>
+    The website is operated by <strong>{op.name}</strong>{op.vatId && <>, VAT ID {op.vatId}</>}{op.registryNumber && <>, Trade Register no. {op.registryNumber}</>}{op.address && <>, registered at {op.address}</>}. You can reach us at <a href={`mailto:${op.email}`}>{op.email}</a>{op.phone && <> or {op.phone}</>}.
+</p>
+
+<h2>2. Purpose of the website</h2>
+<p>
+    The website presents Disconnect's services (web development, design, SEO/AEO/GEO and digital marketing), our portfolio and our articles. The information is general and for guidance only. Any collaboration is agreed through a separate quote and contract, which take precedence over the content of this website.
+</p>
+
+<h2>3. Using the website</h2>
+<p>You agree to use the website in good faith and not to:</p>
+<ul>
+    <li>attempt unauthorised access to the website, its servers or other users' data;</li>
+    <li>submit illegal content, spam or malicious code through forms;</li>
+    <li>use the website in a way that may impair its operation.</li>
+</ul>
+
+<h2>4. Intellectual property</h2>
+<p>
+    The texts, graphics, logo, code and other content of the website belong to {op.name} or are used with the owners' permission. They may not be copied, reproduced or distributed without our written consent, except for short quotes with attribution. Portfolio projects marked “Concept” are design studies created by us.
+</p>
+
+<h2>5. Liability</h2>
+<p>
+    We strive to keep the information on the website accurate and up to date, but we do not guarantee that it is complete or error-free. We are not liable for damages resulting from using the information without consulting us first, or from the website being temporarily unavailable.
+</p>
+
+<h2>6. External links</h2>
+<p>
+    The website may contain links to other websites. We do not control their content and are not responsible for their policies or practices.
+</p>
+
+<h2>7. Personal data</h2>
+<p>
+    How we process your data is described in our <a href={path("privacy", "en")}>privacy policy</a>.
+</p>
+
+<h2>8. Governing law</h2>
+<p>
+    These terms are governed by Romanian law. Any dispute will be settled amicably or, failing that, by the competent courts of Romania. Consumers may also use <a href="https://anpc.ro/ce-este-sal/" rel="noopener">alternative dispute resolution (SAL, ANPC)</a>.
+</p>
+
+<h2>9. Changes</h2>
+<p>
+    We may update these terms at any time. The version in force is the one published on this page, with the date of the last update shown above.
+</p>

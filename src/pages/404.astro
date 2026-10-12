@@ -1,0 +1,86 @@
+---
+import Icon from "~/components/Icon.astro";
+import { path } from "~/config/routes";
+import { seo } from "~/config/seo";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base lang="ro" title={seo.notFound.title} description={seo.notFound.description} alternates={{}} noindex>
+    <section class="container-x flex min-h-[75vh] flex-col items-center justify-center gap-10 py-16 text-center">
+        <svg class="unplugged w-full max-w-md" viewBox="0 0 400 120" fill="none" aria-hidden="true">
+            <path d="M0 60h120" stroke="currentColor" stroke-width="6" stroke-linecap="round"></path>
+            <g class="plug-left">
+                <rect x="120" y="36" width="56" height="48" rx="10" fill="#c6f432"></rect>
+                <path d="M176 48h22M176 72h22" stroke="currentColor" stroke-width="6" stroke-linecap="round"></path>
+            </g>
+            <g class="sparks" stroke="#c6f432" stroke-width="4" stroke-linecap="round">
+                <path d="M212 34l6 10M224 30v12M236 34l-6 10M212 86l6-10M224 90V78M236 86l-6-10"></path>
+            </g>
+            <g class="plug-right">
+                <rect x="244" y="36" width="56" height="48" rx="10" fill="currentColor"></rect>
+                <rect x="252" y="50" width="6" height="20" rx="3" fill="var(--bg)"></rect>
+            </g>
+            <path d="M300 60h100" stroke="currentColor" stroke-width="6" stroke-linecap="round"></path>
+        </svg>
+
+        <div class="flex flex-col items-center gap-4">
+            <p class="font-mono text-sm tracking-[0.14em] text-muted uppercase">Error 404</p>
+            <h1 class="display text-5xl sm:text-7xl">
+                Conexiune pierdută.
+                <span class="mt-2 block text-accent-text" lang="en">Connection lost.</span>
+            </h1>
+            <p class="max-w-md text-lg text-muted">
+                Pagina pe care o cauți nu există sau a fost mutată.
+                <span class="block" lang="en">The page you are looking for doesn't exist or has moved.</span>
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-3 sm:flex-row">
+            <a href={path("home", "ro")} class="btn btn-primary">
+                <Icon name="ArrowLeft" size={18} />
+                Înapoi acasă
+            </a>
+            <a href={path("home", "en")} class="btn btn-ghost" lang="en" hreflang="en">Back to the English site</a>
+        </div>
+    </section>
+</Base>
+
+<style>
+    @media (prefers-reduced-motion: no-preference) {
+        .plug-left {
+            animation: tug-left 3s ease-in-out infinite;
+        }
+
+        .plug-right {
+            animation: tug-right 3s ease-in-out infinite;
+        }
+
+        .sparks {
+            animation: spark 3s ease-in-out infinite;
+        }
+    }
+
+    @keyframes tug-left {
+        50% {
+            transform: translateX(-8px);
+        }
+    }
+
+    @keyframes tug-right {
+        50% {
+            transform: translateX(8px);
+        }
+    }
+
+    @keyframes spark {
+        0%,
+        40%,
+        100% {
+            opacity: 0;
+        }
+        50%,
+        60% {
+            opacity: 1;
+        }
+    }
+</style>

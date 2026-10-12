@@ -1,0 +1,27 @@
+---
+import type { Locale } from "~/config/routes";
+import { site } from "~/config/site";
+import { useTranslations } from "~/i18n/ui";
+import BrandIcon from "./BrandIcon.astro";
+
+interface Props {
+    lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+const href = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(t.whatsappText)}`;
+---
+
+{
+    site.whatsapp && (
+        <a
+            href={href}
+            target="_blank"
+            rel="noopener"
+            class="fixed right-4 bottom-4 z-40 grid size-14 place-items-center rounded-full bg-[#1f7a4d] text-white shadow-lg shadow-black/25 transition-transform hover:scale-105 sm:right-6 sm:bottom-6"
+            aria-label={t.whatsapp}
+        >
+            <BrandIcon name="whatsapp" size={28} />
+        </a>
+    )
+}

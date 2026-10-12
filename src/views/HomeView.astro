@@ -1,0 +1,384 @@
+---
+import CtaBand from "~/components/CtaBand.astro";
+import FaqList from "~/components/FaqList.astro";
+import Icon from "~/components/Icon.astro";
+import Marquee from "~/components/Marquee.astro";
+import Orbit from "~/components/Orbit.astro";
+import ProjectCover from "~/components/ProjectCover.astro";
+import ScoreGauges from "~/components/ScoreGauges.astro";
+import SectionHeading from "~/components/SectionHeading.astro";
+import { alternatesFor, path, type Locale } from "~/config/routes";
+import { formatTitle, pageMeta } from "~/config/seo";
+import { faq } from "~/data/faq";
+import { services, steps, websiteFeatures } from "~/data/services";
+import { useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+import { getProjects, projectPath } from "~/lib/content";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const meta = pageMeta("home", lang);
+const projects = (await getProjects()).slice(0, 3);
+const features = websiteFeatures.flatMap((group) => group.features);
+
+const copy = {
+    ro: {
+        eyebrow: "Studio digital · one-stop shop",
+        title: 'Tot ce ține de digital. <span class="text-accent-text">Un singur partener.</span>',
+        lead: "Website, branding, SEO și marketing pentru afaceri mici și mijlocii — construite, lansate și crescute de aceeași echipă.",
+        trust: [
+            { icon: "Zap", label: "Site-uri ultra-rapide" },
+            { icon: "Handshake", label: "Partener pe termen lung" },
+            { icon: "Languages", label: "Română & English" },
+        ],
+        why: {
+            eyebrow: "De ce Disconnect",
+            title: "Nu suntem un furnizor. Suntem partenerul tău.",
+            vendor: "Furnizorul clasic",
+            us: "Disconnect",
+            cons: [
+                "Livrează și dispare",
+                "Câte o firmă pentru fiecare lucru",
+                "Șabloane, nu soluții",
+                "Rapoarte pe care nu le citește nimeni",
+            ],
+            pros: [
+                "Rămânem alături și după lansare",
+                "O singură echipă pentru tot",
+                "Construit pe măsura afacerii tale",
+                "Măsurăm clienți și vânzări, nu like-uri",
+            ],
+        },
+        services: {
+            eyebrow: "Ce facem",
+            title: "De la identitate la cod. Și mai departe.",
+            all: "Toate serviciile",
+        },
+        features: {
+            eyebrow: "Inclus, nu opțional",
+            title: "Tot ce are nevoie un site modern. Din prima zi.",
+            lead: "Fără pachete ascunse și fără costuri surpriză.",
+        },
+        process: { eyebrow: "Cum lucrăm", title: "Patru pași. Zero bătăi de cap." },
+        scores: {
+            eyebrow: "Performanță",
+            title: "Construit pentru 100/100.",
+            lead: "Viteza contează pentru Google, pentru AI și mai ales pentru clienții tăi. Fiecare site livrat țintește scorul maxim în Lighthouse și PageSpeed.",
+        },
+        work: { eyebrow: "Portofoliu", title: "Lucrări și concepte", all: "Vezi tot portofoliul" },
+        faq: { eyebrow: "Întrebări", title: "Răspunsuri scurte", all: "Toate întrebările frecvente" },
+    },
+    en: {
+        eyebrow: "Digital studio · one-stop shop",
+        title: 'Everything digital. <span class="text-accent-text">One partner.</span>',
+        lead: "Websites, branding, SEO and marketing for small and mid-sized businesses — built, launched and grown by the same team.",
+        trust: [
+            { icon: "Zap", label: "Lightning-fast websites" },
+            { icon: "Handshake", label: "Long-term partner" },
+            { icon: "Languages", label: "English & Română" },
+        ],
+        why: {
+            eyebrow: "Why Disconnect",
+            title: "We're not a vendor. We're your partner.",
+            vendor: "The usual vendor",
+            us: "Disconnect",
+            cons: [
+                "Delivers and disappears",
+                "A different agency for every task",
+                "Templates, not solutions",
+                "Reports nobody reads",
+            ],
+            pros: [
+                "Sticks around after launch",
+                "One team for everything",
+                "Built around your business",
+                "We track customers and sales, not likes",
+            ],
+        },
+        services: {
+            eyebrow: "What we do",
+            title: "From identity to code. And beyond.",
+            all: "All services",
+        },
+        features: {
+            eyebrow: "Included, not optional",
+            title: "Everything a modern website needs. From day one.",
+            lead: "No hidden packages and no surprise costs.",
+        },
+        process: { eyebrow: "How we work", title: "Four steps. Zero headaches." },
+        scores: {
+            eyebrow: "Performance",
+            title: "Built for 100/100.",
+            lead: "Speed matters for Google, for AI and above all for your customers. Every website we ship targets a perfect Lighthouse and PageSpeed score.",
+        },
+        work: { eyebrow: "Portfolio", title: "Work and concepts", all: "See the full portfolio" },
+        faq: { eyebrow: "Questions", title: "Short answers", all: "All frequently asked questions" },
+    },
+}[lang];
+
+const highlight = new Set([0, 6, 10, 15, 22]);
+---
+
+<Base
+    lang={lang}
+    title={formatTitle(meta)}
+    description={meta.description}
+    alternates={alternatesFor("home")}
+    image={`/og/${lang}/home.png`}
+>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+        <div class="grid-bg pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+        <div class="container-x grid items-center gap-12 pt-10 pb-16 md:pt-16 lg:grid-cols-[1.15fr_1fr] lg:pb-24">
+            <div class="flex flex-col gap-7">
+                <p class="eyebrow">{copy.eyebrow}</p>
+                <h1 class="display text-[2.9rem] xs:text-6xl sm:text-7xl xl:text-[6.5rem]" set:html={copy.title} />
+                <p class="max-w-xl text-lg text-muted sm:text-xl">{copy.lead}</p>
+                <div class="flex flex-col gap-3 xs:flex-row">
+                    <a href={path("contact", lang)} class="btn btn-primary">
+                        {t.cta.startProject}
+                        <Icon name="ArrowRight" size={18} />
+                    </a>
+                    <a href={path("services", lang)} class="btn btn-ghost">{t.cta.seeServices}</a>
+                </div>
+                <ul class="mt-2 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium">
+                    {
+                        copy.trust.map((item) => (
+                            <li class="flex items-center gap-2">
+                                <span class="grid size-7 place-items-center rounded-full bg-accent text-accent-ink">
+                                    <Icon name={item.icon as "Zap"} size={15} strokeWidth={2.25} />
+                                </span>
+                                {item.label}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+            <Orbit lang={lang} />
+        </div>
+    </section>
+
+    <Marquee lang={lang} />
+
+    <!-- Partner, not vendor -->
+    <section class="container-x py-20 md:py-28" aria-labelledby="why-title">
+        <SectionHeading id="why-title" eyebrow={copy.why.eyebrow} title={copy.why.title} />
+        <div class="mt-12 grid gap-4 md:grid-cols-2">
+            <div class="card reveal p-7 md:p-9">
+                <h3 class="font-mono text-sm tracking-[0.14em] text-muted uppercase">{copy.why.vendor}</h3>
+                <ul class="mt-6 flex flex-col gap-4">
+                    {
+                        copy.why.cons.map((item) => (
+                            <li class="flex items-start gap-3 text-lg text-muted">
+                                <span class="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-line">
+                                    <Icon name="X" size={15} />
+                                </span>
+                                {item}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+            <div class="reveal rounded-3xl bg-accent p-7 text-accent-ink md:p-9">
+                <h3 class="font-mono text-sm font-semibold tracking-[0.14em] uppercase">{copy.why.us}</h3>
+                <ul class="mt-6 flex flex-col gap-4">
+                    {
+                        copy.why.pros.map((item) => (
+                            <li class="flex items-start gap-3 text-lg font-semibold">
+                                <span class="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-ink text-lime">
+                                    <Icon name="Check" size={15} strokeWidth={2.5} />
+                                </span>
+                                {item}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services bento -->
+    <section class="bg-bg-soft py-20 md:py-28" aria-labelledby="services-title">
+        <div class="container-x">
+            <SectionHeading id="services-title" eyebrow={copy.services.eyebrow} title={copy.services.title} />
+            <ul class="mt-12 grid gap-4 lg:grid-cols-3">
+                {
+                    services.map((service, index) => (
+                        <li
+                            class:list={[
+                                "card reveal group relative flex flex-col gap-6 p-7 transition-colors hover:border-fg md:p-9",
+                                (index === 0 || index === 3) && "lg:col-span-2",
+                            ]}
+                        >
+                            <div class="flex items-start justify-between gap-4">
+                                <span class="grid size-14 place-items-center rounded-2xl bg-accent text-accent-ink">
+                                    <Icon name={service.icon} size={26} />
+                                </span>
+                                <Icon
+                                    name="ArrowUpRight"
+                                    size={26}
+                                    class="text-muted transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-fg"
+                                />
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-2xl font-bold tracking-tight md:text-3xl">
+                                    <a
+                                        href={`${path("services", lang)}#${service.id}`}
+                                        class="after:absolute after:inset-0 after:rounded-3xl"
+                                    >
+                                        {service.title[lang]}
+                                    </a>
+                                </h3>
+                                <p class="text-lg text-muted">{service.short[lang]}</p>
+                            </div>
+                            <ul class="mt-auto flex flex-wrap gap-2">
+                                {service.items.map((item) => (
+                                    <li class="chip">
+                                        <Icon name={item.icon} size={15} />
+                                        {item.label[lang]}
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </section>
+
+    <!-- Everything included -->
+    <section class="container-x py-20 md:py-28" aria-labelledby="features-title">
+        <SectionHeading
+            id="features-title"
+            eyebrow={copy.features.eyebrow}
+            title={copy.features.title}
+            lead={copy.features.lead}
+            align="center"
+            class="mx-auto"
+        />
+        <ul class="reveal mx-auto mt-12 flex max-w-5xl flex-wrap justify-center gap-2.5">
+            {
+                features.map((feature, index) => (
+                    <li
+                        class:list={[
+                            "chip py-2 text-[0.95rem] font-medium",
+                            highlight.has(index) ? "border-transparent bg-accent text-accent-ink" : "bg-card",
+                        ]}
+                    >
+                        <Icon name={feature.icon} size={16} />
+                        {feature.label[lang]}
+                    </li>
+                ))
+            }
+        </ul>
+        <div class="mt-10 flex justify-center">
+            <a href={path("services", lang)} class="btn btn-ghost">
+                {t.cta.seeServices}
+                <Icon name="ArrowRight" size={18} />
+            </a>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="border-y border-white/10 bg-ink py-20 text-[#f2f2ec] md:py-28" aria-labelledby="process-title">
+        <div class="container-x">
+            <div class="flex flex-col gap-4">
+                <p class="eyebrow text-[#a2a69c]">{copy.process.eyebrow}</p>
+                <h2 id="process-title" class="display max-w-3xl text-4xl sm:text-5xl lg:text-6xl">
+                    {copy.process.title}
+                </h2>
+            </div>
+            <ol class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {
+                    steps.map((step, index) => (
+                        <li class="reveal flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/[0.04] p-7">
+                            <div class="flex items-center justify-between">
+                                <span class="grid size-12 place-items-center rounded-full bg-lime text-ink">
+                                    <Icon name={step.icon} size={22} />
+                                </span>
+                                <span class="font-mono text-sm text-[#a2a69c]">0{index + 1}</span>
+                            </div>
+                            <h3 class="text-2xl font-bold">{step.title[lang]}</h3>
+                            <p class="text-[#c9ccc3]">{step.text[lang]}</p>
+                        </li>
+                    ))
+                }
+            </ol>
+        </div>
+    </section>
+
+    <!-- Scores -->
+    <section class="container-x py-20 md:py-28" aria-labelledby="scores-title">
+        <div class="grid items-center gap-12 lg:grid-cols-2">
+            <SectionHeading
+                id="scores-title"
+                eyebrow={copy.scores.eyebrow}
+                title={copy.scores.title}
+                lead={copy.scores.lead}
+            />
+            <div class="card reveal p-8 md:p-10">
+                <ScoreGauges lang={lang} />
+            </div>
+        </div>
+    </section>
+
+    <!-- Work -->
+    {
+        projects.length > 0 && (
+            <section class="bg-bg-soft py-20 md:py-28" aria-labelledby="work-title">
+                <div class="container-x">
+                    <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+                        <SectionHeading id="work-title" eyebrow={copy.work.eyebrow} title={copy.work.title} />
+                        <a href={path("portfolio", lang)} class="btn btn-ghost self-start md:self-auto">
+                            {copy.work.all}
+                            <Icon name="ArrowRight" size={18} />
+                        </a>
+                    </div>
+                    <ul class="mt-12 grid gap-6 md:grid-cols-3">
+                        {projects.map((project) => (
+                            <li class="reveal group relative flex flex-col gap-4">
+                                <ProjectCover
+                                    name={project.data.name}
+                                    colors={project.data.colors}
+                                    class="transition-transform duration-300 group-hover:-translate-y-1"
+                                />
+                                <div class="flex items-center gap-2 text-sm text-muted">
+                                    {project.data.concept && (
+                                        <span class="rounded-full border border-line px-2 py-0.5 font-mono text-xs">
+                                            {t.concept}
+                                        </span>
+                                    )}
+                                    {project.data.industry[lang]}
+                                </div>
+                                <h3 class="text-xl font-bold tracking-tight">
+                                    <a href={projectPath(project, lang)} class="after:absolute after:inset-0">
+                                        {project.data.name} — {project.data.title[lang]}
+                                    </a>
+                                </h3>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </section>
+        )
+    }
+
+    <!-- FAQ teaser -->
+    <section class="container-x py-20 md:py-28" aria-labelledby="faq-title">
+        <div class="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
+            <SectionHeading id="faq-title" eyebrow={copy.faq.eyebrow} title={copy.faq.title}>
+                <a href={path("faq", lang)} class="link-underline mt-2 inline-flex min-h-11 items-center gap-2 font-semibold">
+                    {copy.faq.all}
+                    <Icon name="ArrowRight" size={18} />
+                </a>
+            </SectionHeading>
+            <FaqList items={faq[lang].slice(0, 4)} />
+        </div>
+    </section>
+
+    <CtaBand lang={lang} />
+</Base>

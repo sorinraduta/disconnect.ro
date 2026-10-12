@@ -1,0 +1,53 @@
+---
+interface Props {
+    name: string;
+    colors: { bg: string; fg: string; accent: string };
+    class?: string;
+}
+
+const { name, colors, class: className } = Astro.props;
+---
+
+<div
+    class:list={["relative aspect-[4/3] overflow-hidden rounded-2xl", className]}
+    style={`background:${colors.bg};color:${colors.fg}`}
+    aria-hidden="true"
+>
+    <div
+        class="absolute -right-[12%] -bottom-[18%] size-[70%] rounded-full opacity-90"
+        style={`background:${colors.accent}`}
+    >
+    </div>
+    <div
+        class="absolute inset-x-[7%] top-[12%] bottom-0 flex flex-col overflow-hidden rounded-t-xl shadow-2xl shadow-black/30"
+        style={`background:${colors.bg};outline:1px solid color-mix(in oklab, ${colors.fg} 18%, transparent)`}
+    >
+        <div class="flex items-center gap-1.5 px-3 py-2.5" style={`border-bottom:1px solid color-mix(in oklab, ${colors.fg} 15%, transparent)`}>
+            <span class="size-2 rounded-full bg-current opacity-40"></span>
+            <span class="size-2 rounded-full bg-current opacity-40"></span>
+            <span class="size-2 rounded-full bg-current opacity-40"></span>
+        </div>
+        <div class="flex flex-1 flex-col gap-3 p-[6%]">
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-bold tracking-tight">{name}</span>
+                <span class="flex gap-1.5">
+                    <span class="h-1.5 w-6 rounded-full bg-current opacity-30"></span>
+                    <span class="h-1.5 w-6 rounded-full bg-current opacity-30"></span>
+                    <span class="h-1.5 w-6 rounded-full bg-current opacity-30"></span>
+                </span>
+            </div>
+            <div class="mt-[4%] flex flex-col gap-2">
+                <span class="h-3 w-[80%] rounded-full bg-current opacity-90"></span>
+                <span class="h-3 w-[55%] rounded-full bg-current opacity-90"></span>
+                <span class="mt-1 h-1.5 w-[65%] rounded-full bg-current opacity-35"></span>
+                <span class="h-1.5 w-[50%] rounded-full bg-current opacity-35"></span>
+            </div>
+            <span class="mt-[2%] h-6 w-24 rounded-full" style={`background:${colors.accent}`}></span>
+            <div class="mt-auto grid grid-cols-3 gap-2">
+                <span class="aspect-square rounded-lg bg-current opacity-10"></span>
+                <span class="aspect-square rounded-lg opacity-60" style={`background:${colors.accent}`}></span>
+                <span class="aspect-square rounded-lg bg-current opacity-10"></span>
+            </div>
+        </div>
+    </div>
+</div>

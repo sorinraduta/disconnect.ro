@@ -1,0 +1,55 @@
+---
+import { path, type Locale } from "~/config/routes";
+import { site } from "~/config/site";
+import Icon from "./Icon.astro";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+
+const copy = {
+    ro: {
+        eyebrow: "Următorul pas",
+        title: "Hai să construim ceva care <em>chiar</em> funcționează.",
+        lead: "Spune-ne unde ești și unde vrei să ajungi. Restul e treaba noastră.",
+        cta: "Pornește un proiect",
+    },
+    en: {
+        eyebrow: "Next step",
+        title: "Let's build something that <em>actually</em> works.",
+        lead: "Tell us where you are and where you want to be. The rest is on us.",
+        cta: "Start a project",
+    },
+}[lang];
+---
+
+<section class="container-x py-16 md:py-24" aria-labelledby="cta-title">
+    <div class="relative overflow-hidden rounded-[2rem] bg-ink ring-1 ring-white/10 px-6 py-14 text-[#f2f2ec] sm:px-12 md:py-20">
+        <div
+            class="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-lime/25 blur-3xl"
+            aria-hidden="true"
+        >
+        </div>
+        <div class="relative flex flex-col gap-6">
+            <p class="eyebrow text-[#a2a69c]">{copy.eyebrow}</p>
+            <h2
+                id="cta-title"
+                class="display max-w-4xl text-4xl sm:text-6xl lg:text-7xl [&_em]:text-lime [&_em]:not-italic"
+                set:html={copy.title}
+            />
+            <p class="max-w-xl text-lg text-[#c9ccc3]">{copy.lead}</p>
+            <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <a href={path("contact", lang)} class="btn bg-lime text-ink hover:bg-[#d4ff4f]">
+                    {copy.cta}
+                    <Icon name="ArrowRight" size={18} />
+                </a>
+                <a href={`mailto:${site.email}`} class="btn border border-white/25 text-[#f2f2ec] hover:border-white">
+                    <Icon name="Mail" size={18} />
+                    {site.email}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

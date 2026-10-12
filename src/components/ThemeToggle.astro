@@ -1,0 +1,73 @@
+---
+import type { Locale } from "~/config/routes";
+import { useTranslations } from "~/i18n/ui";
+import Icon from "./Icon.astro";
+
+interface Props {
+    lang: Locale;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<button
+    type="button"
+    class="theme-toggle grid size-11 place-items-center rounded-full border border-line transition-colors hover:border-fg"
+    data-theme-toggle
+    data-label-light={t.theme.toLight}
+    data-label-dark={t.theme.toDark}
+    aria-label={t.theme.toDark}
+>
+    <Icon name="Sun" size={20} class="theme-icon-sun" />
+    <Icon name="Moon" size={20} class="theme-icon-moon" />
+</button>
+
+<style>
+    .theme-toggle :global(.theme-icon-sun) {
+        display: none;
+    }
+
+    :global([data-theme="dark"]) .theme-toggle :global(.theme-icon-sun) {
+        display: block;
+    }
+
+    :global([data-theme="dark"]) .theme-toggle :global(.theme-icon-moon) {
+        display: none;
+    }
+</style>
+
+<script>
+    const root = document.documentElement;
+
+    const sync = () => {
+        const dark = root.dataset.theme === "dark";
+        document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
+            button.setAttribute("aria-label", (dark ? button.dataset.labelLight : button.dataset.labelDark) ?? "");
+        });
+        document
+            .querySelectorAll('meta[name="theme-color"]')
+            .forEach((meta) => meta.setAttribute("content", dark ? "#0b0c0b" : "#f6f5f0"));
+    };
+
+    document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const next = root.dataset.theme === "dark" ? "light" : "dark";
+            root.dataset.theme = next;
+            try {
+                localStorage.setItem("theme", next);
+            } catch {}
+            sync();
+        });
+    });
+
+    // Follow the OS setting until the visitor picks a theme explicitly.
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        try {
+            if (localStorage.getItem("theme")) return;
+        } catch {}
+        root.dataset.theme = event.matches ? "dark" : "light";
+        sync();
+    });
+
+    sync();
+</script>

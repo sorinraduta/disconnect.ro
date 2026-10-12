@@ -1,0 +1,148 @@
+---
+import { path, type Alternates, type Locale, type RouteKey } from "~/config/routes";
+import { site } from "~/config/site";
+import { useTranslations } from "~/i18n/ui";
+import Icon from "./Icon.astro";
+import LangSwitch from "./LangSwitch.astro";
+import Logo from "./Logo.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+interface Props {
+    lang: Locale;
+    alternates: Partial<Alternates>;
+}
+
+const { lang, alternates } = Astro.props;
+const t = useTranslations(lang);
+
+const primary = ["services", "portfolio", "about", "blog", "faq"] as const;
+const mobile = ["home", "services", "portfolio", "about", "blog", "careers", "faq", "contact"] as const;
+
+const current = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (key: RouteKey) => {
+    const href = path(key, lang);
+    if (key === "home") return current === href;
+    return current === href || current.startsWith(`${href}/`);
+};
+---
+
+<header class="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur-md">
+    <div class="container-x flex h-16 items-center justify-between gap-4 md:h-18">
+        <Logo lang={lang} />
+
+        <nav aria-label={t.nav.label} class="hidden lg:block">
+            <ul class="flex items-center gap-1">
+                {
+                    primary.map((key) => (
+                        <li>
+                            <a
+                                href={path(key, lang)}
+                                aria-current={isCurrent(key) ? "page" : undefined}
+                                class="rounded-full px-4 py-2.5 text-[0.95rem] font-medium text-muted transition-colors hover:text-fg aria-[current=page]:text-fg aria-[current=page]:underline aria-[current=page]:decoration-accent aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-8"
+                            >
+                                {t.nav[key]}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+
+        <div class="flex items-center gap-2">
+            <LangSwitch lang={lang} alternates={alternates} />
+            <ThemeToggle lang={lang} />
+            <a href={path("contact", lang)} class="btn btn-primary hidden min-h-11 sm:inline-flex">
+                {t.cta.talk}
+                <Icon name="ArrowUpRight" size={18} />
+            </a>
+            <button
+                type="button"
+                class="grid size-11 place-items-center rounded-full bg-fg text-bg lg:hidden"
+                aria-label={t.nav.openMenu}
+                aria-haspopup="dialog"
+                aria-controls="mobile-menu"
+                data-menu-open
+            >
+                <Icon name="Menu" size={22} />
+            </button>
+        </div>
+    </div>
+</header>
+
+<dialog
+    id="mobile-menu"
+    class="m-0 h-dvh max-h-none w-full max-w-none bg-bg text-fg backdrop:bg-black/50"
+    aria-label={t.nav.menu}
+>
+    <div class="container-x flex h-full flex-col">
+        <div class="flex h-16 items-center justify-between">
+            <Logo lang={lang} />
+            <button
+                type="button"
+                class="grid size-11 place-items-center rounded-full border border-line"
+                aria-label={t.nav.closeMenu}
+                data-menu-close
+            >
+                <Icon name="X" size={22} />
+            </button>
+        </div>
+
+        <nav aria-label={t.nav.label} class="flex-1 overflow-y-auto py-6">
+            <ul class="flex flex-col">
+                {
+                    mobile.map((key, index) => (
+                        <li class="border-b border-line">
+                            <a
+                                href={path(key, lang)}
+                                aria-current={isCurrent(key) ? "page" : undefined}
+                                class="group flex items-baseline justify-between gap-4 py-3.5 text-3xl font-semibold tracking-tight aria-[current=page]:text-accent-text"
+                            >
+                                {t.nav[key]}
+                                <span class="font-mono text-xs text-muted">{String(index + 1).padStart(2, "0")}</span>
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+
+        <div class="flex flex-col gap-3 border-t border-line py-5">
+            <a href={`mailto:${site.email}`} class="text-lg font-medium">{site.email}</a>
+            <a href={path("contact", lang)} class="btn btn-primary w-full">
+                {t.cta.startProject}
+                <Icon name="ArrowRight" size={18} />
+            </a>
+        </div>
+    </div>
+</dialog>
+
+<script>
+    const dialog = document.querySelector<HTMLDialogElement>("#mobile-menu");
+    const opener = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+
+    if (dialog && opener) {
+        opener.addEventListener("click", () => dialog.showModal());
+        dialog.querySelector("[data-menu-close]")?.addEventListener("click", () => dialog.close());
+        dialog.addEventListener("click", (event) => {
+            const target = event.target as HTMLElement;
+            if (target === dialog || target.closest("a")) dialog.close();
+        });
+        dialog.addEventListener("close", () => opener.focus());
+        window.matchMedia("(min-width: 64rem)").addEventListener("change", (event) => {
+            if (event.matches) dialog.close();
+        });
+    }
+</script>
+
+<style>
+    dialog[open] {
+        animation: menu-in 0.25s ease-out;
+    }
+
+    @keyframes menu-in {
+        from {
+            opacity: 0;
+            transform: translateY(-0.75rem);
+        }
+    }
+</style>

@@ -1,0 +1,92 @@
+---
+import { path, type Locale } from "~/config/routes";
+import { hasAnalytics, site } from "~/config/site";
+import { useTranslations } from "~/i18n/ui";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const { googleAnalyticsId, metaPixelId, tiktokPixelId } = site.analytics;
+---
+
+{
+    hasAnalytics && (
+        <section
+            id="cookie-consent"
+            class="fixed inset-x-3 bottom-3 z-50 rounded-2xl border border-line bg-card p-4 shadow-2xl shadow-black/20 sm:right-auto sm:left-4 sm:bottom-4 sm:max-w-sm"
+            aria-labelledby="cookie-consent-title"
+            data-ga={googleAnalyticsId}
+            data-meta={metaPixelId}
+            data-tiktok={tiktokPixelId}
+            hidden
+        >
+            <h2 id="cookie-consent-title" class="font-semibold">
+                {t.cookies.title}
+            </h2>
+            <p class="mt-1 text-sm text-muted">
+                {t.cookies.text}{" "}
+                <a href={path("privacy", lang)} class="link-underline text-fg">
+                    {t.cookies.more}
+                </a>
+            </p>
+            <div class="mt-3 flex gap-2">
+                <button type="button" class="btn btn-primary min-h-11 flex-1 py-2" data-consent="granted">
+                    {t.cookies.accept}
+                </button>
+                <button type="button" class="btn btn-ghost min-h-11 flex-1 py-2" data-consent="denied">
+                    {t.cookies.reject}
+                </button>
+            </div>
+        </section>
+    )
+}
+
+<script>
+    import { loadTrackers } from "~/lib/trackers";
+
+    const banner = document.querySelector<HTMLElement>("#cookie-consent");
+    const KEY = "cookie-consent";
+
+    const read = () => {
+        try {
+            return localStorage.getItem(KEY);
+        } catch {
+            return null;
+        }
+    };
+
+    if (banner) {
+        const ids = {
+            ga: banner.dataset.ga ?? "",
+            meta: banner.dataset.meta ?? "",
+            tiktok: banner.dataset.tiktok ?? "",
+        };
+
+        const choice = read();
+        if (choice === "granted") loadTrackers(ids);
+        else if (!choice) banner.hidden = false;
+
+        banner.querySelectorAll<HTMLButtonElement>("[data-consent]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const value = button.dataset.consent!;
+                try {
+                    localStorage.setItem(KEY, value);
+                } catch {}
+                banner.hidden = true;
+                if (value === "granted") loadTrackers(ids);
+                // Withdrawing consent after trackers ran needs a reload to stop them.
+                else if (window.__trackersLoaded) location.reload();
+            });
+        });
+
+        document.querySelectorAll("[data-cookie-settings]").forEach((button) => {
+            button.addEventListener("click", () => {
+                banner.hidden = false;
+                banner.querySelector<HTMLButtonElement>("[data-consent]")?.focus();
+            });
+        });
+    }
+</script>

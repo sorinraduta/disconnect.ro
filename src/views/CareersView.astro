@@ -1,0 +1,141 @@
+---
+import Icon, { type IconName } from "~/components/Icon.astro";
+import PageHero from "~/components/PageHero.astro";
+import SectionHeading from "~/components/SectionHeading.astro";
+import { alternatesFor, path, type Locale } from "~/config/routes";
+import { formatTitle, pageMeta } from "~/config/seo";
+import { site } from "~/config/site";
+import { useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+import { getRoles, rolePath } from "~/lib/content";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const meta = pageMeta("careers", lang);
+const roles = await getRoles(lang);
+
+type Perk = { icon: IconName; title: string; text: string };
+
+const copy = {
+    ro: {
+        eyebrow: "Cariere",
+        title: 'Construiește <span class="text-accent-text">cu noi.</span>',
+        lead: "Căutăm oameni care țin la detalii și vor să vadă impactul muncii lor, de la primul commit la primul client.",
+        perksEyebrow: "De ce Disconnect",
+        perksTitle: "Muncă bună, fără birocrație.",
+        perks: [
+            { icon: "Laptop", title: "Remote-first", text: "Lucrezi de unde îți e bine, cu program flexibil." },
+            { icon: "Shapes", title: "Proiecte variate", text: "Website-uri, branding, campanii, aplicații web." },
+            { icon: "Users", title: "Echipă mică", text: "Fără niveluri ierarhice. Munca ta se vede." },
+            { icon: "Zap", title: "Tehnologii moderne", text: "Astro, TypeScript, Tailwind, Figma și tot ce e nou și bun." },
+        ] as Perk[],
+        rolesTitle: "Poziții deschise",
+        empty: "Momentan nu avem poziții deschise, dar suntem mereu curioși să cunoaștem oameni talentați.",
+        openTitle: "Nu vezi rolul potrivit?",
+        openText: "Trimite-ne un email cu câteva cuvinte despre tine și link-uri către lucrările tale.",
+        openCta: "Trimite o aplicație spontană",
+        subject: "Aplicație spontană",
+        types: { FULL_TIME: "Normă întreagă", PART_TIME: "Part-time", CONTRACTOR: "Colaborare", INTERN: "Internship" },
+    },
+    en: {
+        eyebrow: "Careers",
+        title: 'Build <span class="text-accent-text">with us.</span>',
+        lead: "We're looking for people who care about details and want to see the impact of their work, from first commit to first customer.",
+        perksEyebrow: "Why Disconnect",
+        perksTitle: "Good work, no bureaucracy.",
+        perks: [
+            { icon: "Laptop", title: "Remote-first", text: "Work from wherever suits you, on a flexible schedule." },
+            { icon: "Shapes", title: "Varied projects", text: "Websites, branding, campaigns, web apps." },
+            { icon: "Users", title: "Small team", text: "No layers of hierarchy. Your work shows." },
+            { icon: "Zap", title: "Modern tech", text: "Astro, TypeScript, Tailwind, Figma and everything new and good." },
+        ] as Perk[],
+        rolesTitle: "Open positions",
+        empty: "We have no open positions right now, but we're always curious to meet talented people.",
+        openTitle: "Don't see the right role?",
+        openText: "Send us an email with a few words about yourself and links to your work.",
+        openCta: "Send an open application",
+        subject: "Open application",
+        types: { FULL_TIME: "Full-time", PART_TIME: "Part-time", CONTRACTOR: "Contract", INTERN: "Internship" },
+    },
+}[lang];
+---
+
+<Base
+    lang={lang}
+    title={formatTitle(meta)}
+    description={meta.description}
+    alternates={alternatesFor("careers")}
+    image={`/og/${lang}/careers.png`}
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: t.nav.careers, href: path("careers", lang) },
+    ]}
+>
+    <PageHero eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} />
+
+    <section class="container-x pb-20 md:pb-28" aria-labelledby="roles-title">
+        <h2 id="roles-title" class="display text-3xl sm:text-4xl">{copy.rolesTitle}</h2>
+        {
+            roles.length === 0 ? (
+                <p class="mt-6 max-w-2xl text-lg text-muted">{copy.empty}</p>
+            ) : (
+                <ul class="mt-8 divide-y divide-line border-y border-line">
+                    {roles.map((role) => (
+                        <li class="group relative flex flex-col gap-3 py-6 md:flex-row md:items-center md:justify-between">
+                            <div class="flex flex-col gap-1">
+                                <h3 class="text-2xl font-bold tracking-tight">
+                                    <a href={rolePath(role)} class="after:absolute after:inset-0">
+                                        {role.data.title}
+                                    </a>
+                                </h3>
+                                <p class="text-muted">{role.data.description}</p>
+                            </div>
+                            <div class="flex shrink-0 items-center gap-2">
+                                <span class="chip">{copy.types[role.data.type]}</span>
+                                <span class="chip">{role.data.location}</span>
+                                <Icon name="ArrowUpRight" size={22} class="ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+
+        <div class="mt-10 flex flex-col gap-6 rounded-3xl bg-accent p-8 text-accent-ink md:flex-row md:items-center md:justify-between md:p-10">
+            <div class="flex flex-col gap-2">
+                <h3 class="text-2xl font-bold tracking-tight md:text-3xl">{copy.openTitle}</h3>
+                <p class="max-w-xl">{copy.openText}</p>
+            </div>
+            <a
+                href={`mailto:${site.email}?subject=${encodeURIComponent(copy.subject)}`}
+                class="btn shrink-0 bg-ink text-[#f2f2ec] hover:bg-black"
+            >
+                <Icon name="Send" size={18} />
+                {copy.openCta}
+            </a>
+        </div>
+    </section>
+
+    <section class="bg-bg-soft py-20 md:py-28" aria-labelledby="perks-title">
+        <div class="container-x">
+            <SectionHeading id="perks-title" eyebrow={copy.perksEyebrow} title={copy.perksTitle} />
+            <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {
+                    copy.perks.map((perk) => (
+                        <li class="card reveal flex flex-col gap-4 p-7">
+                            <span class="grid size-12 place-items-center rounded-2xl bg-accent text-accent-ink">
+                                <Icon name={perk.icon} size={24} />
+                            </span>
+                            <h3 class="text-xl font-bold">{perk.title}</h3>
+                            <p class="text-muted">{perk.text}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </section>
+</Base>

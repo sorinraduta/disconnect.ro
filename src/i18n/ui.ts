@@ -1,0 +1,142 @@
+import type { Locale } from "~/config/routes";
+
+/** Shared interface strings. Page copy lives next to each view in src/views. */
+const ui = {
+    ro: {
+        langName: "Română",
+        skipToContent: "Sari la conținut",
+        nav: {
+            label: "Navigație principală",
+            home: "Acasă",
+            services: "Servicii",
+            portfolio: "Portofoliu",
+            about: "Despre",
+            blog: "Blog",
+            careers: "Cariere",
+            faq: "Întrebări frecvente",
+            contact: "Contact",
+            terms: "Termeni și condiții",
+            privacy: "Confidențialitate",
+            openMenu: "Deschide meniul",
+            closeMenu: "Închide meniul",
+            menu: "Meniu",
+        },
+        cta: {
+            talk: "Hai să vorbim",
+            startProject: "Pornește un proiect",
+            seeServices: "Vezi serviciile",
+        },
+        theme: {
+            toLight: "Activează tema luminoasă",
+            toDark: "Activează tema întunecată",
+        },
+        lang: {
+            switchTo: "Switch to English",
+            short: "EN",
+        },
+        breadcrumb: "Fir de navigare",
+        footer: {
+            tagline: "Studio digital. Un singur partener pentru tot ce ține de online.",
+            explore: "Explorează",
+            company: "Studio",
+            legal: "Legal",
+            contact: "Contact",
+            cookieSettings: "Setări cookie",
+            rights: "Toate drepturile rezervate.",
+            vatId: "CUI",
+            registry: "Reg. Com.",
+            social: "Rețele sociale",
+        },
+        cookies: {
+            title: "Cookie-uri",
+            text: "Folosim cookie-uri de analiză doar cu acordul tău, ca să înțelegem ce funcționează pe site.",
+            accept: "Accept",
+            reject: "Refuz",
+            more: "Detalii în politica de confidențialitate",
+        },
+        whatsapp: "Scrie-ne pe WhatsApp",
+        whatsappText: "Bună! Aș vrea să discutăm despre un proiect.",
+        call: "Sună-ne",
+        email: "Trimite-ne un email",
+        readingTime: (min: number) => `${min} min de citit`,
+        updated: "Actualizat",
+        published: "Publicat",
+        concept: "Concept",
+        backTo: (label: string) => `Înapoi la ${label}`,
+        dateLocale: "ro-RO",
+    },
+    en: {
+        langName: "English",
+        skipToContent: "Skip to content",
+        nav: {
+            label: "Main navigation",
+            home: "Home",
+            services: "Services",
+            portfolio: "Portfolio",
+            about: "About",
+            blog: "Blog",
+            careers: "Careers",
+            faq: "FAQ",
+            contact: "Contact",
+            terms: "Terms and conditions",
+            privacy: "Privacy",
+            openMenu: "Open menu",
+            closeMenu: "Close menu",
+            menu: "Menu",
+        },
+        cta: {
+            talk: "Let's talk",
+            startProject: "Start a project",
+            seeServices: "See our services",
+        },
+        theme: {
+            toLight: "Switch to light theme",
+            toDark: "Switch to dark theme",
+        },
+        lang: {
+            switchTo: "Schimbă în română",
+            short: "RO",
+        },
+        breadcrumb: "Breadcrumb",
+        footer: {
+            tagline: "Digital studio. One partner for everything online.",
+            explore: "Explore",
+            company: "Studio",
+            legal: "Legal",
+            contact: "Contact",
+            cookieSettings: "Cookie settings",
+            rights: "All rights reserved.",
+            vatId: "VAT ID",
+            registry: "Trade Reg.",
+            social: "Social media",
+        },
+        cookies: {
+            title: "Cookies",
+            text: "We use analytics cookies only with your consent, to understand what works on the site.",
+            accept: "Accept",
+            reject: "Decline",
+            more: "Details in our privacy policy",
+        },
+        whatsapp: "Message us on WhatsApp",
+        whatsappText: "Hi! I'd like to talk about a project.",
+        call: "Call us",
+        email: "Email us",
+        readingTime: (min: number) => `${min} min read`,
+        updated: "Updated",
+        published: "Published",
+        concept: "Concept",
+        backTo: (label: string) => `Back to ${label}`,
+        dateLocale: "en-GB",
+    },
+} as const;
+
+export type UI = (typeof ui)[Locale];
+
+export const useTranslations = (lang: Locale): UI => ui[lang];
+
+export const formatDate = (date: Date, lang: Locale) =>
+    new Intl.DateTimeFormat(ui[lang].dateLocale, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    }).format(date);

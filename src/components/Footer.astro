@@ -1,0 +1,136 @@
+---
+import { path, type Alternates, type Locale } from "~/config/routes";
+import { hasAnalytics, site } from "~/config/site";
+import { useTranslations } from "~/i18n/ui";
+import BrandIcon, { type BrandName } from "./BrandIcon.astro";
+import Icon from "./Icon.astro";
+import LangSwitch from "./LangSwitch.astro";
+import Logo from "./Logo.astro";
+
+interface Props {
+    lang: Locale;
+    alternates: Partial<Alternates>;
+}
+
+const { lang, alternates } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+
+const columns = [
+    { title: t.footer.explore, links: ["services", "portfolio", "about", "blog"] as const },
+    { title: t.footer.company, links: ["careers", "faq", "contact"] as const },
+    { title: t.footer.legal, links: ["terms", "privacy"] as const },
+];
+
+const socials = (Object.entries(site.socials) as [BrandName, string][]).filter(([, url]) => url);
+const { legalName, vatId, registryNumber } = site.company;
+---
+
+<footer class="mt-auto border-t border-line bg-bg-soft">
+    <div class="container-x py-14 md:py-20">
+        <div class="grid gap-12 lg:grid-cols-[1.3fr_2fr]">
+            <div class="flex flex-col items-start gap-5">
+                <Logo lang={lang} />
+                <p class="max-w-xs text-muted">{t.footer.tagline}</p>
+                <a
+                    href={`mailto:${site.email}`}
+                    class="link-underline text-2xl font-semibold tracking-tight break-all sm:text-3xl"
+                >
+                    {site.email}
+                </a>
+                {
+                    site.phone && (
+                        <a href={`tel:${site.phone.replace(/\s/g, "")}`} class="inline-flex min-h-11 items-center gap-2 text-lg font-medium">
+                            <Icon name="Phone" size={18} />
+                            {site.phone}
+                        </a>
+                    )
+                }
+            </div>
+
+            <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+                {
+                    columns.map((column) => (
+                        <nav aria-label={column.title}>
+                            <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">{column.title}</h2>
+                            <ul class="mt-4 flex flex-col">
+                                {column.links.map((key) => (
+                                    <li>
+                                        <a
+                                            href={path(key, lang)}
+                                            class="inline-flex min-h-10 items-center font-medium transition-colors hover:text-accent-text"
+                                        >
+                                            {t.nav[key]}
+                                        </a>
+                                    </li>
+                                ))}
+                                {column.title === t.footer.legal && hasAnalytics && (
+                                    <li>
+                                        <button
+                                            type="button"
+                                            data-cookie-settings
+                                            class="inline-flex min-h-10 items-center text-left font-medium transition-colors hover:text-accent-text"
+                                        >
+                                            {t.footer.cookieSettings}
+                                        </button>
+                                    </li>
+                                )}
+                            </ul>
+                        </nav>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div
+            class="mt-14 flex flex-col gap-6 border-t border-line pt-8 text-sm text-muted md:flex-row md:items-center md:justify-between"
+        >
+            <div class="flex flex-col gap-1">
+                <p>© {year} {legalName || site.name}. {t.footer.rights}</p>
+                {
+                    (vatId || registryNumber) && (
+                        <p>
+                            {vatId && `${t.footer.vatId}: ${vatId}`}
+                            {vatId && registryNumber && " · "}
+                            {registryNumber && `${t.footer.registry}: ${registryNumber}`}
+                        </p>
+                    )
+                }
+            </div>
+            <div class="flex items-center gap-2">
+                {
+                    socials.length > 0 && (
+                        <ul class="flex items-center gap-1" aria-label={t.footer.social}>
+                            {socials.map(([name, url]) => (
+                                <li>
+                                    <a
+                                        href={url}
+                                        rel="me noopener"
+                                        target="_blank"
+                                        class="grid size-11 place-items-center rounded-full text-fg transition-colors hover:bg-card"
+                                        aria-label={name.charAt(0).toUpperCase() + name.slice(1)}
+                                    >
+                                        <BrandIcon name={name} size={18} />
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    )
+                }
+                <LangSwitch lang={lang} alternates={alternates} />
+            </div>
+        </div>
+    </div>
+
+    <div class="overflow-hidden" aria-hidden="true">
+        <div class="footer-word container-x -mb-[0.22em] text-center text-[17vw] leading-none font-extrabold tracking-[-0.06em] select-none lg:text-[14rem]"></div>
+    </div>
+</footer>
+
+<style>
+    /* Decorative wordmark lives in a pseudo-element so it is not read or contrast-checked as text. */
+    .footer-word::before {
+        content: "disconnect";
+        color: color-mix(in oklab, var(--fg) 6%, transparent);
+    }
+</style>

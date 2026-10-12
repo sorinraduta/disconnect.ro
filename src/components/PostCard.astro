@@ -1,0 +1,61 @@
+---
+import type { Locale } from "~/config/routes";
+import { formatDate, useTranslations } from "~/i18n/ui";
+import { postPath, readingMinutes, type Post } from "~/lib/content";
+
+interface Props {
+    lang: Locale;
+    post: Post;
+    variant?: number;
+    featured?: boolean;
+    headingLevel?: "h2" | "h3";
+}
+
+const { lang, post, variant = 0, featured = false, headingLevel = "h2" } = Astro.props;
+const t = useTranslations(lang);
+const Heading = headingLevel;
+
+const tones = [
+    "bg-accent text-accent-ink",
+    "bg-ink text-[#f2f2ec]",
+    "bg-bg-soft text-fg border border-line",
+];
+const tone = tones[variant % tones.length];
+const label = post.data.tags.slice(0, 3).join(" · ");
+---
+
+<article class:list={["group relative flex flex-col gap-5", featured && "md:grid md:grid-cols-2 md:items-center md:gap-10"]}>
+    <div
+        class:list={[
+            "relative flex aspect-[16/10] items-end overflow-hidden rounded-3xl p-6 transition-transform duration-300 group-hover:-translate-y-1",
+            tone,
+        ]}
+        aria-hidden="true"
+    >
+        <span
+            class="glyph absolute -top-6 -right-4 text-[9rem] leading-none font-extrabold tracking-tighter"
+            data-glyph={post.data.tags[0]?.slice(0, 3)}
+        >
+        </span>
+        <span class="relative font-mono text-sm font-semibold">{label}</span>
+    </div>
+    <div class="flex flex-col gap-3">
+        <p class="flex flex-wrap gap-x-3 font-mono text-xs text-muted">
+            <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published, lang)}</time>
+            <span aria-hidden="true">·</span>
+            <span>{t.readingTime(readingMinutes(post.body))}</span>
+        </p>
+        <Heading class:list={["font-bold tracking-tight", featured ? "text-3xl md:text-5xl" : "text-2xl"]}>
+            <a href={postPath(post)} class="after:absolute after:inset-0">{post.data.title}</a>
+        </Heading>
+        <p class="text-muted">{post.data.description}</p>
+    </div>
+</article>
+
+<style>
+    /* Decorative glyph in a pseudo-element so it is not contrast-checked as text. */
+    .glyph::before {
+        content: attr(data-glyph);
+        opacity: 0.15;
+    }
+</style>

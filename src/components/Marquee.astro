@@ -1,0 +1,26 @@
+---
+import type { Locale } from "~/config/routes";
+import { marqueeWords } from "~/data/services";
+
+interface Props {
+    lang: Locale;
+}
+
+const words = marqueeWords.map((word) => word[Astro.props.lang]);
+const loop = [...words, ...words];
+---
+
+<div class="overflow-hidden border-y border-line bg-bg-soft py-6 md:py-8" aria-hidden="true">
+    <div class="marquee-track flex w-max animate-marquee items-center">
+        {
+            loop.map((word, index) => (
+                <span class="flex items-center text-4xl font-bold tracking-tight whitespace-nowrap md:text-6xl">
+                    <span class:list={[index % 2 ? "text-accent-text" : "text-fg"]}>{word}</span>
+                    <svg class="mx-6 size-6 text-fg md:mx-10 md:size-9" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c.7 6.2 5.8 11.3 12 12-6.2.7-11.3 5.8-12 12-.7-6.2-5.8-11.3-12-12C6.2 11.3 11.3 6.2 12 0z" />
+                    </svg>
+                </span>
+            ))
+        }
+    </div>
+</div>

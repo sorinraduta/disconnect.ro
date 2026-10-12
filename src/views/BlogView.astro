@@ -1,0 +1,73 @@
+---
+import CtaBand from "~/components/CtaBand.astro";
+import PageHero from "~/components/PageHero.astro";
+import PostCard from "~/components/PostCard.astro";
+import { alternatesFor, path, type Locale } from "~/config/routes";
+import { formatTitle, pageMeta } from "~/config/seo";
+import { useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+import { getPosts } from "~/lib/content";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const meta = pageMeta("blog", lang);
+const [featured, ...rest] = await getPosts(lang);
+
+const copy = {
+    ro: {
+        eyebrow: "Blog",
+        title: 'Idei scurte. <span class="text-accent-text">Utile pe bune.</span>',
+        lead: "Ghiduri practice despre website-uri, SEO, AI și marketing, fără jargon.",
+        empty: "Primele articole apar în curând.",
+        rss: "Abonează-te prin RSS",
+    },
+    en: {
+        eyebrow: "Blog",
+        title: 'Short reads. <span class="text-accent-text">Actually useful.</span>',
+        lead: "Practical guides on websites, SEO, AI and marketing, without the jargon.",
+        empty: "The first articles are coming soon.",
+        rss: "Subscribe via RSS",
+    },
+}[lang];
+---
+
+<Base
+    lang={lang}
+    title={formatTitle(meta)}
+    description={meta.description}
+    alternates={alternatesFor("blog")}
+    image={`/og/${lang}/blog.png`}
+    pageType="CollectionPage"
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: t.nav.blog, href: path("blog", lang) },
+    ]}
+>
+    <PageHero eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead}>
+        <a href={lang === "ro" ? "/rss.xml" : "/en/rss.xml"} class="link-underline font-mono text-sm lg:justify-self-end">
+            {copy.rss}
+        </a>
+    </PageHero>
+
+    <section class="container-x pb-10">
+        {!featured && <p class="text-lg text-muted">{copy.empty}</p>}
+        {featured && <PostCard lang={lang} post={featured} featured />}
+        {
+            rest.length > 0 && (
+                <ul class="mt-16 grid gap-x-6 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+                    {rest.map((post, index) => (
+                        <li class="reveal">
+                            <PostCard lang={lang} post={post} variant={index + 1} />
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+    </section>
+
+    <CtaBand lang={lang} />
+</Base>

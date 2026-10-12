@@ -1,0 +1,28 @@
+---
+import type { FaqItem } from "~/data/faq";
+import Icon from "./Icon.astro";
+
+interface Props {
+    items: FaqItem[];
+    headingLevel?: "h2" | "h3";
+}
+
+const { items, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+---
+
+<div class="divide-y divide-line border-y border-line">
+    {
+        items.map((item) => (
+            <details class="group" name="faq">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left [&::-webkit-details-marker]:hidden">
+                    <Heading class="text-lg font-semibold sm:text-xl">{item.question}</Heading>
+                    <span class="grid size-9 shrink-0 place-items-center rounded-full border border-line transition-transform group-open:rotate-45 group-open:border-accent group-open:bg-accent group-open:text-accent-ink">
+                        <Icon name="Plus" size={18} />
+                    </span>
+                </summary>
+                <p class="max-w-3xl pb-6 text-muted">{item.answer}</p>
+            </details>
+        ))
+    }
+</div>

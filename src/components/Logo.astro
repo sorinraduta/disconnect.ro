@@ -1,0 +1,22 @@
+---
+import { path, type Locale } from "~/config/routes";
+import { useTranslations } from "~/i18n/ui";
+import LogoMark from "./LogoMark.astro";
+
+interface Props {
+    lang: Locale;
+    class?: string;
+}
+
+const { lang, class: className } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<a
+    href={path("home", lang)}
+    class:list={["inline-flex min-h-11 items-center gap-2.5 rounded-lg", className]}
+>
+    <LogoMark size={32} />
+    <span class="text-xl font-bold tracking-tight">disconnect<span class="text-accent-text">.</span></span>
+    <span class="sr-only">— {t.nav.home}</span>
+</a>

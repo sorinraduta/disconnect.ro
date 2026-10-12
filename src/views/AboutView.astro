@@ -1,0 +1,240 @@
+---
+import CtaBand from "~/components/CtaBand.astro";
+import Icon, { type IconName } from "~/components/Icon.astro";
+import PageHero from "~/components/PageHero.astro";
+import SectionHeading from "~/components/SectionHeading.astro";
+import { alternatesFor, path, type Locale } from "~/config/routes";
+import { formatTitle, pageMeta } from "~/config/seo";
+import { useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const meta = pageMeta("about", lang);
+
+type Value = { icon: IconName; title: string; text: string };
+
+const copy = {
+    ro: {
+        eyebrow: "Despre noi",
+        title: 'Nu suntem o agenție. <span class="text-accent-text">Suntem un studio.</span>',
+        lead: "Puțini oameni, foarte implicați. Exact cât trebuie ca să-ți cunoaștem afacerea pe dinafară.",
+        word: "stu·di·o",
+        phonetic: "/ˈstu.di.o/",
+        kind: "s.n.",
+        definition:
+            "Echipă restrânsă de specialiști care concepe și construiește produse digitale, de la identitate la cod, cu implicare directă și atenție la calitatea execuției.",
+        stats: [
+            { value: "1", label: "echipă pentru tot" },
+            { value: "0", label: "intermediari" },
+            { value: "100", label: "țintă PageSpeed" },
+            { value: "2", label: "limbi: RO & EN" },
+        ],
+        mission: 'Disconnect nu este un vânzător. Este un <span class="text-accent-text">partener pe termen lung</span>, cu un singur obiectiv: succesul afacerii tale.',
+        nameEyebrow: "De ce „Disconnect”?",
+        nameTitle: "Tu te deconectezi. Noi rămânem conectați.",
+        nameText:
+            "Site, domeniu, email, reclame, SEO, rapoarte. Toate sunt importante, dar niciuna nu e afacerea ta. Ne ocupăm noi de ele, ca tu să te poți deconecta de grijile digitale și să te concentrezi pe ce faci cel mai bine.",
+        valuesEyebrow: "Cum lucrăm",
+        valuesTitle: "Patru principii, fără excepții.",
+        values: [
+            { icon: "Users", title: "Implicare directă", text: "Vorbești cu oamenii care fac treaba, nu cu un intermediar." },
+            { icon: "BadgeCheck", title: "Calitate în execuție", text: "Viteză, accesibilitate, cod curat. Detaliile fac diferența." },
+            { icon: "Eye", title: "Transparență", text: "Prețuri clare, termene reale și rapoarte pe înțelesul tuturor." },
+            { icon: "Infinity", title: "Pe termen lung", text: "Rămânem alături după lansare și creștem împreună." },
+        ] as Value[],
+        whoEyebrow: "Pentru cine",
+        whoTitle: "Construit pentru afaceri care vor să crească.",
+        main: "Focus principal",
+        smb: "Afaceri mici și mijlocii",
+        smbList: ["Clinici și cabinete", "Restaurante și cafenele", "Magazine și branduri locale", "Servicii și consultanță", "Startup-uri"],
+        large: "Și pentru companii mari",
+        largeText: "Lucrăm și cu companii mari, pe proiecte unde contează viteza, calitatea și o echipă care se implică.",
+        largeList: ["Landing page-uri și microsite-uri", "Campanii și lansări", "Audit SEO, AEO și performanță"],
+    },
+    en: {
+        eyebrow: "About us",
+        title: 'Not an agency. <span class="text-accent-text">A studio.</span>',
+        lead: "A few people, deeply involved. Just enough to know your business inside out.",
+        word: "stu·di·o",
+        phonetic: "/ˈstjuː.di.əʊ/",
+        kind: "noun",
+        definition:
+            "A small team of specialists who design and build digital products, from identity to code, with hands-on involvement and attention to the quality of execution.",
+        stats: [
+            { value: "1", label: "team for everything" },
+            { value: "0", label: "middlemen" },
+            { value: "100", label: "PageSpeed target" },
+            { value: "2", label: "languages: EN & RO" },
+        ],
+        mission: 'Disconnect is not a vendor. It is a <span class="text-accent-text">long-term partner</span> with a single goal: the success of your business.',
+        nameEyebrow: "Why “Disconnect”?",
+        nameTitle: "You disconnect. We stay connected.",
+        nameText:
+            "Website, domain, email, ads, SEO, reports. They all matter, but none of them is your business. We take care of them, so you can disconnect from the digital hassle and focus on what you do best.",
+        valuesEyebrow: "How we work",
+        valuesTitle: "Four principles, no exceptions.",
+        values: [
+            { icon: "Users", title: "Hands-on", text: "You talk to the people doing the work, not a middleman." },
+            { icon: "BadgeCheck", title: "Quality of execution", text: "Speed, accessibility, clean code. Details make the difference." },
+            { icon: "Eye", title: "Transparency", text: "Clear prices, realistic timelines and reports anyone can read." },
+            { icon: "Infinity", title: "Long term", text: "We stick around after launch and grow together." },
+        ] as Value[],
+        whoEyebrow: "Who we work with",
+        whoTitle: "Built for businesses that want to grow.",
+        main: "Main focus",
+        smb: "Small and mid-sized businesses",
+        smbList: ["Clinics and practices", "Restaurants and cafés", "Shops and local brands", "Services and consulting", "Startups"],
+        large: "And large companies too",
+        largeText: "We also work with large companies, on projects where speed, quality and an engaged team matter.",
+        largeList: ["Landing pages and microsites", "Campaigns and launches", "SEO, AEO and performance audits"],
+    },
+}[lang];
+---
+
+<Base
+    lang={lang}
+    title={formatTitle(meta)}
+    description={meta.description}
+    alternates={alternatesFor("about")}
+    image={`/og/${lang}/about.png`}
+    pageType="AboutPage"
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: t.nav.about, href: path("about", lang) },
+    ]}
+>
+    <PageHero eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead}>
+        <!-- Dictionary entry -->
+        <figure class="card relative overflow-hidden p-7 md:p-8">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span class="text-4xl font-bold tracking-tight">{copy.word}</span>
+                <span class="font-mono text-sm text-muted">{copy.phonetic}</span>
+                <span class="font-mono text-sm text-accent-text italic">{copy.kind}</span>
+            </div>
+            <blockquote class="mt-4 text-lg leading-relaxed">
+                <p><span class="font-mono text-muted">1.</span> {copy.definition}</p>
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-2 font-mono text-xs text-muted">
+                <Icon name="BookOpen" size={14} />
+                disconnect.ro
+            </figcaption>
+        </figure>
+    </PageHero>
+
+    <!-- Stats -->
+    <section class="border-y border-line" aria-label={copy.eyebrow}>
+        <ul class="container-x grid grid-cols-2 md:grid-cols-4">
+            {
+                copy.stats.map((stat, index) => (
+                    <li
+                        class:list={[
+                            "flex flex-col gap-1 py-8 md:py-10",
+                            index % 2 === 1 && "border-l border-line pl-6",
+                            index > 1 && "border-t border-line md:border-t-0",
+                            index >= 1 && "md:border-l md:pl-8",
+                        ]}
+                    >
+                        <span class="text-6xl font-extrabold tracking-tighter md:text-7xl">{stat.value}</span>
+                        <span class="text-muted">{stat.label}</span>
+                    </li>
+                ))
+            }
+        </ul>
+    </section>
+
+    <!-- Mission -->
+    <section class="container-x py-20 md:py-32">
+        <p class="reveal display mx-auto max-w-5xl text-center text-3xl sm:text-5xl lg:text-6xl" set:html={copy.mission} />
+    </section>
+
+    <!-- Name -->
+    <section class="border-y border-white/10 bg-ink py-20 text-[#f2f2ec] md:py-28" aria-labelledby="name-title">
+        <div class="container-x grid items-center gap-12 lg:grid-cols-[1fr_1.2fr]">
+            <div class="reveal relative mx-auto aspect-square w-full max-w-sm" aria-hidden="true">
+                <svg viewBox="0 0 64 64" class="name-mark size-full">
+                    <path class="half-left" d="M30 16a18 18 0 0 0 0 36z" fill="#c6f432"></path>
+                    <path class="half-right" d="M34 12a18 18 0 0 1 0 36z" fill="#f2f2ec"></path>
+                </svg>
+            </div>
+            <div class="flex flex-col gap-5">
+                <p class="eyebrow text-[#a2a69c]">{copy.nameEyebrow}</p>
+                <h2 id="name-title" class="display text-4xl sm:text-5xl lg:text-6xl">{copy.nameTitle}</h2>
+                <p class="max-w-xl text-lg text-[#c9ccc3]">{copy.nameText}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values -->
+    <section class="container-x py-20 md:py-28" aria-labelledby="values-title">
+        <SectionHeading id="values-title" eyebrow={copy.valuesEyebrow} title={copy.valuesTitle} />
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {
+                copy.values.map((value) => (
+                    <li class="card reveal flex flex-col gap-4 p-7">
+                        <span class="grid size-12 place-items-center rounded-2xl bg-accent text-accent-ink">
+                            <Icon name={value.icon} size={24} />
+                        </span>
+                        <h3 class="text-xl font-bold">{value.title}</h3>
+                        <p class="text-muted">{value.text}</p>
+                    </li>
+                ))
+            }
+        </ul>
+    </section>
+
+    <!-- Who -->
+    <section class="bg-bg-soft py-20 md:py-28" aria-labelledby="who-title">
+        <div class="container-x">
+            <SectionHeading id="who-title" eyebrow={copy.whoEyebrow} title={copy.whoTitle} />
+            <div class="mt-12 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+                <div class="reveal flex flex-col gap-6 rounded-3xl bg-accent p-8 text-accent-ink md:p-10">
+                    <span class="self-start rounded-full bg-ink px-3 py-1 font-mono text-xs font-semibold text-lime uppercase">
+                        {copy.main}
+                    </span>
+                    <h3 class="text-3xl font-bold tracking-tight md:text-4xl">{copy.smb}</h3>
+                    <ul class="flex flex-wrap gap-2">
+                        {copy.smbList.map((item) => <li class="chip border-ink/30 font-medium">{item}</li>)}
+                    </ul>
+                </div>
+                <div class="card reveal flex flex-col gap-5 p-8 md:p-10">
+                    <h3 class="text-2xl font-bold tracking-tight">{copy.large}</h3>
+                    <p class="text-muted">{copy.largeText}</p>
+                    <ul class="flex flex-col gap-3">
+                        {
+                            copy.largeList.map((item) => (
+                                <li class="flex items-center gap-3 font-medium">
+                                    <Icon name="Check" size={18} class="text-accent-text" strokeWidth={2.5} />
+                                    {item}
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <CtaBand lang={lang} />
+</Base>
+
+<style>
+    @media (prefers-reduced-motion: no-preference) {
+        .half-left,
+        .half-right {
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .name-mark:hover .half-left {
+            transform: translateX(-3px);
+        }
+
+        .name-mark:hover .half-right {
+            transform: translateX(3px);
+        }
+    }
+</style>

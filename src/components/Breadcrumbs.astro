@@ -1,0 +1,40 @@
+---
+import type { Locale } from "~/config/routes";
+import { useTranslations } from "~/i18n/ui";
+import type { Crumb } from "~/lib/schema";
+import Icon from "./Icon.astro";
+
+interface Props {
+    lang: Locale;
+    crumbs: Crumb[];
+}
+
+const { lang, crumbs } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav aria-label={t.breadcrumb} class="container-x pt-6">
+    <ol class="flex flex-wrap items-center gap-1 font-mono text-xs text-muted">
+        {
+            crumbs.map((crumb, index) => {
+                const last = index === crumbs.length - 1;
+                return (
+                    <li class="flex items-center gap-1">
+                        {last ? (
+                            <span aria-current="page" class="text-fg">
+                                {crumb.name}
+                            </span>
+                        ) : (
+                            <>
+                                <a href={crumb.href} class="inline-flex min-h-6 items-center hover:text-fg">
+                                    {crumb.name}
+                                </a>
+                                <Icon name="ChevronRight" size={14} />
+                            </>
+                        )}
+                    </li>
+                );
+            })
+        }
+    </ol>
+</nav>

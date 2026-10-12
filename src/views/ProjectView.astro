@@ -1,0 +1,153 @@
+---
+import CtaBand from "~/components/CtaBand.astro";
+import Icon from "~/components/Icon.astro";
+import ProjectCover from "~/components/ProjectCover.astro";
+import { path, type Locale } from "~/config/routes";
+import { formatTitle } from "~/config/seo";
+import { services } from "~/data/services";
+import { useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+import { getProjects, projectAlternates, projectPath, type Project } from "~/lib/content";
+
+interface Props {
+    lang: Locale;
+    project: Project;
+}
+
+const { lang, project } = Astro.props;
+const { data } = project;
+const t = useTranslations(lang);
+const pathname = projectPath(project, lang);
+const serviceName = (id: string) => services.find((service) => service.id === id)?.title[lang] ?? id;
+
+const all = await getProjects();
+const next = all[(all.findIndex((item) => item.id === project.id) + 1) % all.length];
+
+const copy = {
+    ro: {
+        challenge: "Provocarea",
+        solution: "Soluția",
+        results: data.concept ? "Ce livrează conceptul" : "Rezultate",
+        services: "Servicii",
+        industry: "Domeniu",
+        year: "An",
+        visit: "Vezi site-ul live",
+        next: "Proiectul următor",
+        conceptNote: "Acesta este un concept de design, nu o lucrare pentru un client.",
+    },
+    en: {
+        challenge: "The challenge",
+        solution: "The solution",
+        results: data.concept ? "What the concept delivers" : "Results",
+        services: "Services",
+        industry: "Industry",
+        year: "Year",
+        visit: "Visit the live site",
+        next: "Next project",
+        conceptNote: "This is a design concept, not client work.",
+    },
+}[lang];
+---
+
+<Base
+    lang={lang}
+    title={formatTitle({ title: `${data.name} — ${data.industry[lang]}` })}
+    description={data.summary[lang]}
+    alternates={projectAlternates(project)}
+    image={`/og/${lang}/portfolio/${project.id}.png`}
+    pageType="ItemPage"
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: t.nav.portfolio, href: path("portfolio", lang) },
+        { name: data.name, href: pathname },
+    ]}
+>
+    <article>
+        <header class="container-x grid gap-10 pt-10 pb-12 md:pt-16 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+            <div class="flex flex-col gap-6">
+                <p class="eyebrow">
+                    {data.concept ? `${t.concept} · ` : ""}{data.industry[lang]}
+                </p>
+                <h1 class="display text-5xl sm:text-6xl lg:text-7xl">{data.name}</h1>
+                <p class="max-w-xl text-xl text-muted">{data.title[lang]}</p>
+            </div>
+            <dl class="grid grid-cols-2 gap-6 border-t border-line pt-6 text-sm">
+                <div>
+                    <dt class="font-mono text-xs tracking-[0.14em] text-muted uppercase">{copy.industry}</dt>
+                    <dd class="mt-1 font-medium">{data.industry[lang]}</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs tracking-[0.14em] text-muted uppercase">{copy.year}</dt>
+                    <dd class="mt-1 font-medium">{data.year}</dd>
+                </div>
+                <div class="col-span-2">
+                    <dt class="font-mono text-xs tracking-[0.14em] text-muted uppercase">{copy.services}</dt>
+                    <dd class="mt-2 flex flex-wrap gap-2">
+                        {data.services.map((id) => <span class="chip">{serviceName(id)}</span>)}
+                    </dd>
+                </div>
+            </dl>
+        </header>
+
+        <div class="container-x">
+            <ProjectCover name={data.name} colors={data.colors} class="aspect-[16/10] rounded-[2rem] md:aspect-[2/1]" />
+        </div>
+
+        <div class="container-x grid gap-12 py-16 md:grid-cols-2 md:py-24">
+            <section class="flex flex-col gap-4">
+                <h2 class="eyebrow">{copy.challenge}</h2>
+                <p class="text-2xl leading-snug font-medium md:text-3xl">{data.challenge[lang]}</p>
+            </section>
+            <section class="flex flex-col gap-4">
+                <h2 class="eyebrow">{copy.solution}</h2>
+                <p class="text-lg text-muted">{data.solution[lang]}</p>
+            </section>
+        </div>
+
+        <section class="container-x pb-8">
+            <h2 class="eyebrow">{copy.results}</h2>
+            <ul class="mt-6 grid gap-4 md:grid-cols-3">
+                {
+                    data.results.map((result) => (
+                        <li class="card flex items-start gap-4 p-7">
+                            <span class="grid size-9 shrink-0 place-items-center rounded-full bg-accent text-accent-ink">
+                                <Icon name="Check" size={18} strokeWidth={2.5} />
+                            </span>
+                            <span class="text-lg font-semibold">{result[lang]}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+            {data.concept && <p class="mt-6 text-sm text-muted">{copy.conceptNote}</p>}
+            {
+                data.url && (
+                    <a href={data.url} class="btn btn-primary mt-8" rel="noopener" target="_blank">
+                        {copy.visit}
+                        <Icon name="ArrowUpRight" size={18} />
+                    </a>
+                )
+            }
+        </section>
+    </article>
+
+    {
+        next && next.id !== project.id && (
+            <nav class="container-x pt-12" aria-label={copy.next}>
+                <a
+                    href={projectPath(next, lang)}
+                    class="group flex items-center justify-between gap-6 border-y border-line py-8"
+                >
+                    <span class="flex flex-col gap-1">
+                        <span class="eyebrow">{copy.next}</span>
+                        <span class="text-3xl font-bold tracking-tight md:text-5xl">{next.data.name}</span>
+                    </span>
+                    <span class="grid size-14 shrink-0 place-items-center rounded-full bg-accent text-accent-ink transition-transform group-hover:translate-x-1">
+                        <Icon name="ArrowRight" size={24} />
+                    </span>
+                </a>
+            </nav>
+        )
+    }
+
+    <CtaBand lang={lang} />
+</Base>

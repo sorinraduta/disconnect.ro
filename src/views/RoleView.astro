@@ -1,0 +1,76 @@
+---
+import { render } from "astro:content";
+import Icon from "~/components/Icon.astro";
+import { path } from "~/config/routes";
+import { formatTitle } from "~/config/seo";
+import { site } from "~/config/site";
+import { useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+import { entryLang, getRoles, rolePath, translatedAlternates, type Role } from "~/lib/content";
+import { jobPosting } from "~/lib/schema";
+
+interface Props {
+    role: Role;
+}
+
+const { role } = Astro.props;
+const lang = entryLang(role);
+const t = useTranslations(lang);
+const { Content } = await render(role);
+const pathname = rolePath(role);
+const { title, description, type, remote, location, published, validThrough } = role.data;
+const alternates = translatedAlternates(role, await getRoles(), rolePath);
+
+const copy = {
+    ro: { apply: "Aplică acum", subject: `Aplicare: ${title}`, remote: "Remote" },
+    en: { apply: "Apply now", subject: `Application: ${title}`, remote: "Remote" },
+}[lang];
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent(copy.subject)}`;
+---
+
+<Base
+    lang={lang}
+    title={formatTitle({ title })}
+    description={description}
+    alternates={alternates}
+    image={`/og/${lang}/careers.png`}
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: t.nav.careers, href: path("careers", lang) },
+        { name: title, href: pathname },
+    ]}
+    schema={[
+        jobPosting({
+            pathname,
+            title,
+            description: role.rendered?.html ?? description,
+            datePosted: published,
+            validThrough,
+            employmentType: type,
+            remote,
+        }),
+    ]}
+>
+    <article class="container-x pt-10 pb-20 md:pt-16">
+        <header class="flex flex-col gap-6 border-b border-line pb-10">
+            <p class="eyebrow">{t.nav.careers}</p>
+            <h1 class="display max-w-4xl text-4xl sm:text-5xl lg:text-6xl">{title}</h1>
+            <p class="max-w-2xl text-xl text-muted">{description}</p>
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="chip"><Icon name="MapPin" size={15} />{location}</span>
+                {remote && <span class="chip"><Icon name="Laptop" size={15} />{copy.remote}</span>}
+            </div>
+            <a href={mailto} class="btn btn-primary self-start">
+                {copy.apply}
+                <Icon name="ArrowRight" size={18} />
+            </a>
+        </header>
+        <div class="prose pt-10">
+            <Content />
+        </div>
+        <a href={mailto} class="btn btn-primary mt-12">
+            {copy.apply}
+            <Icon name="ArrowRight" size={18} />
+        </a>
+    </article>
+</Base>

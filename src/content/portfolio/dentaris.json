@@ -1,0 +1,27 @@
+{
+  "order": 1,
+  "name": "Dentaris",
+  "concept": true,
+  "year": 2026,
+  "industry": { "ro": "Clinică stomatologică", "en": "Dental clinic" },
+  "title": { "ro": "Programări online pentru o clinică locală", "en": "Online bookings for a local clinic" },
+  "summary": {
+    "ro": "Website rapid, programări online și profil Google optimizat, ca pacienții din zonă să găsească și să aleagă clinica în câteva secunde.",
+    "en": "A fast website, online bookings and an optimised Google profile, so nearby patients can find and choose the clinic in seconds."
+  },
+  "services": ["web", "seo", "marketing"],
+  "colors": { "bg": "#eef7f6", "fg": "#0b3b3a", "accent": "#2bb3a3" },
+  "challenge": {
+    "ro": "Pacienții sunau doar în timpul programului, iar clinica nu apărea în căutările locale „dentist + oraș”.",
+    "en": "Patients could only call during opening hours, and the clinic was missing from local “dentist + city” searches."
+  },
+  "solution": {
+    "ro": "Site nou cu programări online, pagini pe tratamente optimizate SEO/AEO, Google Business Profile complet și campanii locale Google Ads.",
+    "en": "A new site with online bookings, SEO/AEO-optimised treatment pages, a complete Google Business Profile and local Google Ads campaigns."
+  },
+  "results": [
+    { "ro": "Programări non-stop, și în afara programului", "en": "Bookings around the clock, even after hours" },
+    { "ro": "Pagini clare pe fiecare tratament", "en": "Clear pages for every treatment" },
+    { "ro": "Scor 100 în PageSpeed pe mobil", "en": "100 PageSpeed score on mobile" }
+  ]
+}

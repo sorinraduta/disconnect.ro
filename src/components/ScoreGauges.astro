@@ -1,0 +1,63 @@
+---
+import type { Locale } from "~/config/routes";
+
+interface Props {
+    lang: Locale;
+}
+
+const labels = {
+    ro: ["Performanță", "Accesibilitate", "Bune practici", "SEO"],
+    en: ["Performance", "Accessibility", "Best practices", "SEO"],
+}[Astro.props.lang];
+
+const circumference = 2 * Math.PI * 44;
+---
+
+<ul class="grid grid-cols-2 gap-6 sm:grid-cols-4">
+    {
+        labels.map((label) => (
+            <li class="flex flex-col items-center gap-3 text-center">
+                <div class="relative size-28 sm:size-32">
+                    <svg class="size-full -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+                        <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="7" class="text-line" />
+                        <circle
+                            cx="50"
+                            cy="50"
+                            r="44"
+                            fill="none"
+                            stroke="#0cce6b"
+                            stroke-width="7"
+                            stroke-linecap="round"
+                            stroke-dasharray={circumference}
+                            class="gauge-arc"
+                            style={`--c:${circumference}`}
+                        />
+                    </svg>
+                    <span class="absolute inset-0 grid place-items-center text-4xl font-bold tracking-tight">100</span>
+                </div>
+                <span class="font-medium">{label}</span>
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+            .gauge-arc {
+                animation: gauge-fill linear both;
+                animation-timeline: view();
+                animation-range: entry 10% cover 40%;
+            }
+
+            @keyframes gauge-fill {
+                from {
+                    stroke-dashoffset: calc(var(--c) * 1px);
+                }
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+        }
+    }
+</style>

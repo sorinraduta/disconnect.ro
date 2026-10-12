@@ -1,0 +1,118 @@
+---
+import type { Locale } from "~/config/routes";
+import Icon, { type IconName } from "./Icon.astro";
+import LogoMark from "./LogoMark.astro";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+
+type Item = { icon: IconName; label: string; angle: number };
+
+const center = { ro: "Afacerea ta", en: "Your business" }[lang];
+
+const inner: Item[] = [
+    { icon: "MonitorSmartphone", label: "Website", angle: -90 },
+    { icon: "Palette", label: "Branding", angle: 30 },
+    { icon: "Search", label: "SEO", angle: 150 },
+];
+
+const outer: Item[] = [
+    { icon: "Target", label: "Google Ads", angle: -60 },
+    { icon: "Megaphone", label: "Meta Ads", angle: 0 },
+    { icon: "Bot", label: "GEO", angle: 60 },
+    { icon: "ChartColumn", label: "Analytics", angle: 120 },
+    { icon: "Mail", label: "Email", angle: 180 },
+    { icon: "PanelsTopLeft", label: "UI/UX", angle: 240 },
+];
+
+// Radii in cqw (percent of the orbit width). The inner ring clears the centre badge at every angle.
+const rings = [
+    { items: inner, radius: 29, duration: 50 },
+    { items: outer, radius: 42, duration: 80 },
+];
+---
+
+<div class="orbit relative mx-auto aspect-square w-full max-w-[32rem]" aria-hidden="true">
+    <div class="absolute inset-[18%] rounded-full bg-lime/20 blur-3xl"></div>
+
+    {
+        rings.map((ring) => (
+            <div
+                class="orbit-ring absolute top-1/2 left-1/2 -translate-1/2 rounded-full border border-dashed border-fg/20"
+                style={`width:${ring.radius * 2}cqw;height:${ring.radius * 2}cqw`}
+            />
+        ))
+    }
+
+    <div class="absolute top-1/2 left-1/2 flex -translate-1/2 flex-col items-center">
+        <LogoMark size={88} class="size-16 drop-shadow-xl sm:size-22" />
+        <span class="-mt-2 rounded-full bg-fg px-2.5 py-0.5 text-[0.7rem] font-semibold whitespace-nowrap text-bg sm:text-xs">
+            {center}
+        </span>
+    </div>
+
+    {
+        rings.map((ring, index) => (
+            <div
+                class:list={["orbit-spin absolute inset-0", index % 2 && "orbit-spin-reverse"]}
+                style={`--dur:${ring.duration}s`}
+            >
+                {ring.items.map((item) => (
+                    <div class="orbit-item" style={`--a:${item.angle}deg;--r:${ring.radius}cqw`}>
+                        <span class="orbit-chip chip gap-1.5 bg-card px-2.5 py-1 text-xs font-semibold shadow-lg shadow-black/10 sm:px-3 sm:py-1.5 sm:text-sm">
+                            <Icon name={item.icon} size={14} />
+                            {item.label}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        ))
+    }
+</div>
+
+<style>
+    .orbit {
+        container-type: inline-size;
+    }
+
+    .orbit-item {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(var(--a) * -1)) translate(-50%, -50%);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .orbit-spin {
+            animation: orbit-spin var(--dur) linear infinite;
+        }
+
+        .orbit-spin-reverse {
+            animation-direction: reverse;
+        }
+
+        /* Counter-rotate chips so labels stay upright. */
+        .orbit-chip {
+            display: inline-flex;
+            animation: orbit-spin var(--dur) linear infinite reverse;
+        }
+
+        .orbit-spin-reverse .orbit-chip {
+            animation-direction: normal;
+        }
+
+        .orbit:hover .orbit-spin,
+        .orbit:hover .orbit-chip {
+            animation-play-state: paused;
+        }
+    }
+
+    @keyframes orbit-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>

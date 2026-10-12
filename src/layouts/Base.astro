@@ -1,0 +1,121 @@
+---
+import { Font } from "astro:assets";
+import Breadcrumbs from "~/components/Breadcrumbs.astro";
+import CookieConsent from "~/components/CookieConsent.astro";
+import Footer from "~/components/Footer.astro";
+import Header from "~/components/Header.astro";
+import Seo from "~/components/Seo.astro";
+import WhatsAppButton from "~/components/WhatsAppButton.astro";
+import type { Alternates, Locale } from "~/config/routes";
+import { seo } from "~/config/seo";
+import { useTranslations } from "~/i18n/ui";
+import { organization, webPage, website, type Crumb } from "~/lib/schema";
+import "~/styles/global.css";
+
+interface Props {
+    lang: Locale;
+    title: string;
+    description: string;
+    alternates: Partial<Alternates>;
+    /** OG image path, e.g. "/og/ro/services.png". */
+    image?: string;
+    pageType?: string;
+    crumbs?: Crumb[];
+    noindex?: boolean;
+    /** Extra JSON-LD nodes for this page. */
+    schema?: Record<string, unknown>[];
+    article?: { published: Date; updated?: Date; tags: string[] };
+}
+
+const {
+    lang,
+    title,
+    description,
+    alternates,
+    image = `/og/${lang}/home.png`,
+    pageType,
+    crumbs,
+    noindex,
+    schema = [],
+    article,
+} = Astro.props;
+
+const t = useTranslations(lang);
+const pathname = alternates[lang] ?? Astro.url.pathname;
+
+const graph = [
+    organization(lang),
+    website(),
+    ...webPage({ lang, pathname, name: title, description, type: pageType, image, crumbs }),
+    ...schema,
+];
+---
+
+<!doctype html>
+<html lang={lang} dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script is:inline>
+            // Apply the saved or system theme before first paint to avoid a flash.
+            (() => {
+                let theme;
+                try {
+                    theme = localStorage.getItem("theme");
+                } catch {}
+                if (theme !== "light" && theme !== "dark") {
+                    theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                }
+                document.documentElement.dataset.theme = theme;
+            })();
+        </script>
+        {/* Both subsets render above the fold on every page (ă, ș, ț live in latin-ext), so preload both. */}
+        <Font cssVariable="--font-bricolage" preload />
+
+        <Seo
+            lang={lang}
+            title={title}
+            description={description}
+            alternates={alternates}
+            image={image}
+            imageAlt={`${title} — ${seo.tagline[lang]}`}
+            type={article ? "article" : "website"}
+            noindex={noindex}
+            graph={graph}
+            article={article}
+        />
+
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content={seo.themeColor.light} />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content={seo.themeColor.dark} />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="format-detection" content="telephone=no" />
+
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="sitemap" href="/sitemap.xml" />
+        <link rel="alternate" type="application/rss+xml" title="Disconnect Blog (RO)" href="/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title="Disconnect Blog (EN)" href="/en/rss.xml" />
+        <link rel="alternate" type="text/plain" title="LLMs" href="/llms.txt" />
+    </head>
+    <body class="flex min-h-dvh flex-col overflow-x-clip">
+        <a
+            href="#main"
+            class="sr-only-focusable fixed top-3 left-3 z-[60] rounded-full bg-accent px-5 py-3 font-semibold text-accent-ink"
+        >
+            {t.skipToContent}
+        </a>
+
+        <Header lang={lang} alternates={alternates} />
+
+        <main id="main" tabindex="-1" class="flex-1 outline-none">
+            {crumbs && crumbs.length > 1 && <Breadcrumbs lang={lang} crumbs={crumbs} />}
+            <slot />
+        </main>
+
+        <Footer lang={lang} alternates={alternates} />
+        <WhatsAppButton lang={lang} />
+        <CookieConsent lang={lang} />
+    </body>
+</html>

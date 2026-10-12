@@ -1,0 +1,94 @@
+---
+import CtaBand from "~/components/CtaBand.astro";
+import Icon from "~/components/Icon.astro";
+import PageHero from "~/components/PageHero.astro";
+import ProjectCover from "~/components/ProjectCover.astro";
+import { alternatesFor, path, type Locale } from "~/config/routes";
+import { formatTitle, pageMeta } from "~/config/seo";
+import { services } from "~/data/services";
+import { useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+import { getProjects, projectPath } from "~/lib/content";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const meta = pageMeta("portfolio", lang);
+const projects = await getProjects();
+const serviceName = (id: string) => services.find((service) => service.id === id)?.title[lang] ?? id;
+
+const copy = {
+    ro: {
+        eyebrow: "Portofoliu",
+        title: 'Lucrări care <span class="text-accent-text">vorbesc singure.</span>',
+        lead: "O selecție de proiecte și concepte. Fiecare pornește de la o problemă reală a unei afaceri.",
+        note: "Proiectele marcate „Concept” sunt studii de design, nu lucrări pentru clienți.",
+    },
+    en: {
+        eyebrow: "Portfolio",
+        title: 'Work that <span class="text-accent-text">speaks for itself.</span>',
+        lead: "A selection of projects and concepts. Each one starts from a real business problem.",
+        note: "Projects marked “Concept” are design studies, not client work.",
+    },
+}[lang];
+---
+
+<Base
+    lang={lang}
+    title={formatTitle(meta)}
+    description={meta.description}
+    alternates={alternatesFor("portfolio")}
+    image={`/og/${lang}/portfolio.png`}
+    pageType="CollectionPage"
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: t.nav.portfolio, href: path("portfolio", lang) },
+    ]}
+>
+    <PageHero eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} />
+
+    <section class="container-x pb-10">
+        <ul class="grid gap-x-6 gap-y-14 md:grid-cols-2">
+            {
+                projects.map((project, index) => (
+                    <li class:list={["reveal group relative flex flex-col gap-5", index % 2 === 1 && "md:mt-24"]}>
+                        <ProjectCover
+                            name={project.data.name}
+                            colors={project.data.colors}
+                            class="transition-transform duration-300 group-hover:-translate-y-1.5"
+                        />
+                        <div class="flex flex-wrap items-center gap-2 text-sm text-muted">
+                            {project.data.concept && (
+                                <span class="rounded-full border border-line px-2 py-0.5 font-mono text-xs">{t.concept}</span>
+                            )}
+                            <span>{project.data.industry[lang]}</span>
+                            <span aria-hidden="true">·</span>
+                            <span>{project.data.year}</span>
+                        </div>
+                        <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+                            <a href={projectPath(project, lang)} class="after:absolute after:inset-0">
+                                {project.data.name}
+                                <span class="text-muted"> — {project.data.title[lang]}</span>
+                            </a>
+                        </h2>
+                        <p class="text-muted">{project.data.summary[lang]}</p>
+                        <ul class="flex flex-wrap gap-2">
+                            {project.data.services.map((id) => (
+                                <li class="chip text-sm">{serviceName(id)}</li>
+                            ))}
+                        </ul>
+                    </li>
+                ))
+            }
+        </ul>
+        <p class="mt-16 flex items-center gap-2 text-sm text-muted">
+            <Icon name="Info" size={16} />
+            {copy.note}
+        </p>
+    </section>
+
+    <CtaBand lang={lang} />
+</Base>

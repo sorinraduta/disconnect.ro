@@ -1,0 +1,326 @@
+---
+import BrandIcon from "~/components/BrandIcon.astro";
+import Icon from "~/components/Icon.astro";
+import { alternatesFor, path, type Locale } from "~/config/routes";
+import { formatTitle, pageMeta } from "~/config/seo";
+import { site } from "~/config/site";
+import { services } from "~/data/services";
+import { useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const meta = pageMeta("contact", lang);
+
+const copy = {
+    ro: {
+        eyebrow: "Contact",
+        title: 'Spune-ne ce <span class="text-accent-text">construim.</span>',
+        lead: "Câteva rânduri sunt suficiente. Revenim în maximum o zi lucrătoare cu pașii următori.",
+        next: "Ce urmează",
+        steps: ["Îți răspundem în maximum o zi lucrătoare", "Discutăm 30 de minute despre afacerea ta", "Primești o ofertă clară, fără costuri ascunse"],
+        name: "Nume",
+        email: "Email",
+        phone: "Telefon",
+        company: "Companie",
+        optional: "opțional",
+        interest: "Ce te interesează?",
+        unsure: "Nu știu încă",
+        message: "Mesaj",
+        messageHint: "Pe scurt: ce faci, ce ai nevoie, până când.",
+        honeypot: "Nu completa acest câmp",
+        privacy: "Trimițând formularul, ești de acord cu",
+        privacyLink: "politica de confidențialitate",
+        submit: "Trimite mesajul",
+        sending: "Se trimite…",
+        error: "Mesajul nu a putut fi trimis. Încearcă din nou sau scrie-ne direct la",
+        whatsapp: "WhatsApp",
+        directly: "Sau direct",
+    },
+    en: {
+        eyebrow: "Contact",
+        title: 'Tell us what <span class="text-accent-text">we\'re building.</span>',
+        lead: "A few lines are enough. We'll get back to you within one business day with next steps.",
+        next: "What happens next",
+        steps: ["We reply within one business day", "We talk for 30 minutes about your business", "You get a clear quote, no hidden costs"],
+        name: "Name",
+        email: "Email",
+        phone: "Phone",
+        company: "Company",
+        optional: "optional",
+        interest: "What are you interested in?",
+        unsure: "Not sure yet",
+        message: "Message",
+        messageHint: "In short: what you do, what you need, by when.",
+        honeypot: "Leave this field empty",
+        privacy: "By sending this form you agree to our",
+        privacyLink: "privacy policy",
+        submit: "Send message",
+        sending: "Sending…",
+        error: "Your message could not be sent. Please try again or email us at",
+        whatsapp: "WhatsApp",
+        directly: "Or reach us directly",
+    },
+}[lang];
+
+const interests = [...services.map((service) => service.title[lang]), copy.unsure];
+const inputClass =
+    "w-full rounded-xl border border-line bg-bg px-4 py-3 text-base transition-colors placeholder:text-muted/80 hover:border-muted focus:border-fg focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2";
+---
+
+<Base
+    lang={lang}
+    title={formatTitle(meta)}
+    description={meta.description}
+    alternates={alternatesFor("contact")}
+    image={`/og/${lang}/contact.png`}
+    pageType="ContactPage"
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: t.nav.contact, href: path("contact", lang) },
+    ]}
+>
+    <section class="relative">
+        <div class="grid-bg pointer-events-none absolute inset-0 -z-10 opacity-70" aria-hidden="true"></div>
+        <div class="container-x grid gap-12 pt-12 pb-20 md:pt-20 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+            <div class="flex flex-col gap-8">
+                <div class="flex flex-col gap-6">
+                    <p class="eyebrow">{copy.eyebrow}</p>
+                    <h1 class="display text-[2.75rem] xs:text-5xl sm:text-6xl lg:text-7xl" set:html={copy.title} />
+                    <p class="max-w-md text-lg text-muted">{copy.lead}</p>
+                </div>
+
+                <div>
+                    <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">{copy.next}</h2>
+                    <ol class="mt-4 flex flex-col gap-3">
+                        {
+                            copy.steps.map((step, index) => (
+                                <li class="flex items-center gap-3 font-medium">
+                                    <span class="grid size-8 shrink-0 place-items-center rounded-full bg-accent font-mono text-sm text-accent-ink">
+                                        {index + 1}
+                                    </span>
+                                    {step}
+                                </li>
+                            ))
+                        }
+                    </ol>
+                </div>
+
+                <div>
+                    <h2 class="font-mono text-xs tracking-[0.14em] text-muted uppercase">{copy.directly}</h2>
+                    <ul class="mt-4 flex flex-col gap-2">
+                        <li>
+                            <a href={`mailto:${site.email}`} class="group inline-flex min-h-11 items-center gap-3 text-xl font-semibold">
+                                <Icon name="Mail" size={20} class="text-accent-text" />
+                                <span class="link-underline">{site.email}</span>
+                            </a>
+                        </li>
+                        {
+                            site.phone && (
+                                <li>
+                                    <a href={`tel:${site.phone.replace(/\s/g, "")}`} class="inline-flex min-h-11 items-center gap-3 text-xl font-semibold">
+                                        <Icon name="Phone" size={20} class="text-accent-text" />
+                                        <span class="link-underline">{site.phone}</span>
+                                    </a>
+                                </li>
+                            )
+                        }
+                        {
+                            site.whatsapp && (
+                                <li>
+                                    <a
+                                        href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(t.whatsappText)}`}
+                                        target="_blank"
+                                        rel="noopener"
+                                        class="inline-flex min-h-11 items-center gap-3 text-xl font-semibold"
+                                    >
+                                        <BrandIcon name="whatsapp" size={20} class="text-accent-text" />
+                                        <span class="link-underline">{copy.whatsapp}</span>
+                                    </a>
+                                </li>
+                            )
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <form
+                action="/api/contact"
+                method="post"
+                class="card relative flex flex-col gap-5 p-6 shadow-xl shadow-black/5 sm:p-9"
+                data-contact-form
+                data-thanks={path("contactThanks", lang)}
+            >
+                <input type="hidden" name="lang" value={lang} />
+                <input type="hidden" name="ts" value="" />
+
+                <div class="grid gap-5 sm:grid-cols-2">
+                    <div class="flex flex-col gap-2">
+                        <label for="name" class="font-medium">{copy.name}</label>
+                        <input id="name" name="name" type="text" autocomplete="name" required maxlength="120" class={inputClass} />
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="email" class="font-medium">{copy.email}</label>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            inputmode="email"
+                            required
+                            maxlength="200"
+                            class={inputClass}
+                        />
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="phone" class="font-medium">
+                            {copy.phone} <span class="font-normal text-muted">({copy.optional})</span>
+                        </label>
+                        <input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" class={inputClass} />
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="company" class="font-medium">
+                            {copy.company} <span class="font-normal text-muted">({copy.optional})</span>
+                        </label>
+                        <input id="company" name="company" type="text" autocomplete="organization" maxlength="120" class={inputClass} />
+                    </div>
+                </div>
+
+                <fieldset class="flex flex-col gap-3">
+                    <legend class="mb-3 font-medium">{copy.interest}</legend>
+                    <div class="flex flex-wrap gap-2">
+                        {
+                            interests.map((interest, index) => (
+                                <label class="interest-chip chip min-h-11 cursor-pointer px-4 font-medium transition-colors hover:border-fg">
+                                    <input type="checkbox" name="interest" value={interest} class="sr-only" id={`interest-${index}`} />
+                                    <Icon name="Check" size={15} strokeWidth={2.5} class="check hidden" />
+                                    {interest}
+                                </label>
+                            ))
+                        }
+                    </div>
+                </fieldset>
+
+                <div class="flex flex-col gap-2">
+                    <label for="message" class="font-medium">{copy.message}</label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        required
+                        minlength="10"
+                        maxlength="5000"
+                        aria-describedby="message-hint"
+                        class={`${inputClass} resize-y`}></textarea>
+                    <p id="message-hint" class="text-sm text-muted">{copy.messageHint}</p>
+                </div>
+
+                <!-- Honeypot: invisible to people, irresistible to bots. -->
+                <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+                    <label for="website">{copy.honeypot}</label>
+                    <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+                </div>
+
+                <p class="text-sm text-muted">
+                    {copy.privacy}{" "}
+                    <a href={path("privacy", lang)} class="link-underline text-fg">{copy.privacyLink}</a>.
+                </p>
+
+                <p class="hidden rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm" role="alert" tabindex="-1" data-form-error>
+                    {copy.error} <a href={`mailto:${site.email}`} class="font-semibold underline">{site.email}</a>.
+                </p>
+
+                <button type="submit" class="btn btn-primary w-full text-lg sm:w-auto sm:self-start" data-label-sending={copy.sending}>
+                    <span data-submit-label>{copy.submit}</span>
+                    <Icon name="ArrowRight" size={18} />
+                </button>
+            </form>
+        </div>
+    </section>
+</Base>
+
+<style>
+    .interest-chip:has(input:checked) {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--accent-ink);
+    }
+
+    .interest-chip:has(input:checked) :global(.check) {
+        display: block;
+    }
+
+    .interest-chip:has(input:focus-visible) {
+        outline: 2px solid var(--ring);
+        outline-offset: 3px;
+    }
+
+    [data-contact-form] :is(input, textarea)[aria-invalid="true"] {
+        border-color: rgb(239 68 68);
+    }
+</style>
+
+<script>
+    const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+
+    if (form) {
+        // Validation is handled below so errors can be announced; without JS the browser validates natively.
+        form.noValidate = true;
+        const started = Date.now();
+        const ts = form.elements.namedItem("ts") as HTMLInputElement;
+        ts.value = String(started);
+
+        const button = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
+        const label = form.querySelector<HTMLElement>("[data-submit-label]")!;
+        const error = form.querySelector<HTMLElement>("[data-form-error]")!;
+        const idleLabel = label.textContent;
+
+        // Clear the error state as soon as a flagged field becomes valid.
+        form.addEventListener("input", (event) => {
+            const field = event.target as HTMLInputElement | HTMLTextAreaElement;
+            if (field.getAttribute("aria-invalid") === "true" && field.checkValidity()) {
+                field.setAttribute("aria-invalid", "false");
+            }
+        });
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            error.classList.add("hidden");
+
+            const fields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]");
+            let firstInvalid: HTMLElement | null = null;
+            fields.forEach((field) => {
+                const invalid = !field.checkValidity();
+                field.setAttribute("aria-invalid", String(invalid));
+                if (invalid && !firstInvalid) firstInvalid = field;
+            });
+            if (firstInvalid) {
+                (firstInvalid as HTMLElement).focus();
+                form.reportValidity();
+                return;
+            }
+
+            button.disabled = true;
+            label.textContent = button.dataset.labelSending ?? "";
+
+            try {
+                const response = await fetch(form.action, {
+                    method: "POST",
+                    body: new FormData(form),
+                    headers: { Accept: "application/json" },
+                });
+                if (!response.ok) throw new Error(String(response.status));
+                window.location.assign(form.dataset.thanks!);
+            } catch {
+                error.classList.remove("hidden");
+                error.focus();
+                button.disabled = false;
+                label.textContent = idleLabel;
+            }
+        });
+    }
+</script>

@@ -1,0 +1,27 @@
+{
+  "order": 2,
+  "name": "Brutăria Veche",
+  "concept": true,
+  "year": 2026,
+  "industry": { "ro": "Brutărie artizanală", "en": "Artisan bakery" },
+  "title": { "ro": "Identitate caldă pentru o brutărie de cartier", "en": "A warm identity for a neighbourhood bakery" },
+  "summary": {
+    "ro": "Logo, identitate vizuală, website cu meniul zilei și feed Instagram, plus campanii Meta pentru precomenzi de sărbători.",
+    "en": "Logo, visual identity, a website with the daily menu and Instagram feed, plus Meta campaigns for holiday pre-orders."
+  },
+  "services": ["design", "web", "marketing"],
+  "colors": { "bg": "#fbf1e4", "fg": "#4a2410", "accent": "#e8833a" },
+  "challenge": {
+    "ro": "Produse excelente, dar o imagine inconsecventă: alt logo pe ambalaje, pe vitrină și pe rețelele sociale.",
+    "en": "Excellent products but an inconsistent image: a different logo on packaging, the shop window and social media."
+  },
+  "solution": {
+    "ro": "Un sistem de brand complet (logo, culori, tipografie, ambalaje) și un site simplu, cu meniul zilei editabil din telefon.",
+    "en": "A complete brand system (logo, colours, typography, packaging) and a simple site with a daily menu editable from a phone."
+  },
+  "results": [
+    { "ro": "Brand coerent online și offline", "en": "Consistent brand online and offline" },
+    { "ro": "Meniu actualizat în 30 de secunde", "en": "Menu updated in 30 seconds" },
+    { "ro": "Precomenzi online de sărbători", "en": "Online holiday pre-orders" }
+  ]
+}

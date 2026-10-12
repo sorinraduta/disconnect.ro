@@ -1,0 +1,59 @@
+---
+import { path } from "~/config/routes";
+import { operator } from "~/lib/legal";
+
+const op = operator();
+---
+
+<p>
+    Acești termeni stabilesc regulile de utilizare a site-ului <strong>{op.domain}</strong>. Prin accesarea și folosirea site-ului
+    accepți termenii de mai jos. Dacă nu ești de acord cu ei, te rugăm să nu folosești site-ul.
+</p>
+
+<h2>1. Cine suntem</h2>
+<p>
+    Site-ul este operat de <strong>{op.name}</strong>{op.vatId && <>, CUI {op.vatId}</>}{op.registryNumber && <>, nr. Reg. Com. {op.registryNumber}</>}{op.address && <>, cu sediul în {op.address}</>}. Ne poți contacta la <a href={`mailto:${op.email}`}>{op.email}</a>{op.phone && <> sau la {op.phone}</>}.
+</p>
+
+<h2>2. Scopul site-ului</h2>
+<p>
+    Site-ul prezintă serviciile Disconnect (dezvoltare web, design, SEO/AEO/GEO și marketing digital), portofoliul și articolele noastre. Informațiile au caracter general și informativ. Orice colaborare se stabilește printr-o ofertă și un contract separat, care au prioritate față de conținutul acestui site.
+</p>
+
+<h2>3. Utilizarea site-ului</h2>
+<p>Te angajezi să folosești site-ul cu bună-credință și să nu:</p>
+<ul>
+    <li>încerci să accesezi neautorizat site-ul, serverele sau datele altor utilizatori;</li>
+    <li>trimiți prin formulare conținut ilegal, spam sau cod malițios;</li>
+    <li>folosești site-ul într-un mod care îi poate afecta funcționarea.</li>
+</ul>
+
+<h2>4. Proprietate intelectuală</h2>
+<p>
+    Textele, elementele grafice, logo-ul, codul și restul conținutului site-ului aparțin {op.name} sau sunt folosite cu acordul deținătorilor. Nu pot fi copiate, reproduse sau distribuite fără acordul nostru scris, cu excepția citărilor scurte cu indicarea sursei. Proiectele marcate „Concept” din portofoliu sunt studii de design realizate de noi.
+</p>
+
+<h2>5. Răspundere</h2>
+<p>
+    Ne străduim ca informațiile de pe site să fie corecte și actualizate, însă nu garantăm că sunt complete sau lipsite de erori. Nu răspundem pentru pagube rezultate din folosirea informațiilor de pe site fără o consultare prealabilă cu noi sau din indisponibilitatea temporară a site-ului.
+</p>
+
+<h2>6. Link-uri externe</h2>
+<p>
+    Site-ul poate conține link-uri către alte site-uri. Nu controlăm conținutul acestora și nu răspundem pentru politicile sau practicile lor.
+</p>
+
+<h2>7. Date personale</h2>
+<p>
+    Modul în care prelucrăm datele tale este descris în <a href={path("privacy", "ro")}>politica de confidențialitate</a>.
+</p>
+
+<h2>8. Legea aplicabilă</h2>
+<p>
+    Acești termeni sunt guvernați de legea română. Orice neînțelegere va fi rezolvată pe cale amiabilă, iar dacă acest lucru nu este posibil, de instanțele competente din România. Consumatorii pot apela și la <a href="https://anpc.ro/ce-este-sal/" rel="noopener">soluționarea alternativă a litigiilor (SAL, ANPC)</a>.
+</p>
+
+<h2>9. Modificări</h2>
+<p>
+    Putem actualiza acești termeni oricând. Versiunea în vigoare este cea publicată pe această pagină, cu data ultimei actualizări afișată mai sus.
+</p>

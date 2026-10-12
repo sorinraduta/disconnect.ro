@@ -1,0 +1,48 @@
+---
+import { alternatesFor, path, type Locale } from "~/config/routes";
+import { formatTitle, pageMeta } from "~/config/seo";
+import { formatDate, useTranslations } from "~/i18n/ui";
+import Base from "~/layouts/Base.astro";
+import PrivacyEn from "./legal/PrivacyEn.astro";
+import PrivacyRo from "./legal/PrivacyRo.astro";
+import TermsEn from "./legal/TermsEn.astro";
+import TermsRo from "./legal/TermsRo.astro";
+
+interface Props {
+    lang: Locale;
+    page: "terms" | "privacy";
+}
+
+/** Bump when the legal text changes. */
+const LEGAL_UPDATED = new Date("2026-10-12");
+
+const { lang, page } = Astro.props;
+const t = useTranslations(lang);
+const meta = pageMeta(page, lang);
+const Body = { terms: { ro: TermsRo, en: TermsEn }, privacy: { ro: PrivacyRo, en: PrivacyEn } }[page][lang];
+---
+
+<Base
+    lang={lang}
+    title={formatTitle(meta)}
+    description={meta.description}
+    alternates={alternatesFor(page)}
+    image={`/og/${lang}/${page}.png`}
+    crumbs={[
+        { name: t.nav.home, href: path("home", lang) },
+        { name: meta.title, href: path(page, lang) },
+    ]}
+>
+    <article class="container-x pt-10 pb-20 md:pt-16">
+        <header class="flex flex-col gap-5 border-b border-line pb-10">
+            <p class="eyebrow">Legal</p>
+            <h1 class="display text-4xl sm:text-5xl lg:text-6xl">{meta.title}</h1>
+            <p class="font-mono text-sm text-muted">
+                {t.updated}: <time datetime={LEGAL_UPDATED.toISOString().slice(0, 10)}>{formatDate(LEGAL_UPDATED, lang)}</time>
+            </p>
+        </header>
+        <div class="prose pt-10">
+            <Body />
+        </div>
+    </article>
+</Base>
