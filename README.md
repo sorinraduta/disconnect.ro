@@ -47,7 +47,7 @@ Empty values in `site.ts` hide the related UI: set `phone` to show click-to-call
 ### Content
 
 - **Blog:** add `src/content/blog/ro/my-post.md` and its translation in `en/`, both with the same `translationKey`. The slug comes from the file name.
-- **Portfolio:** add a JSON file to `src/content/portfolio/`. `concept: true` labels design studies that are not client work; `comingSoon: true` labels a project that has not launched. The cover is generated from `colors`, unless the project has its own visuals in `src/components/portfolio/` (wired up in `ProjectCover.astro` and `ProjectGallery.astro`).
+- **Portfolio:** add a JSON file to `src/content/portfolio/`. `comingSoon: true` labels a project that has not launched. The cover is generated from `colors`, unless the project has its own visuals in `src/components/portfolio/` (wired up in `ProjectCover.astro` and `ProjectGallery.astro`).
 - **Careers:** roles with `draft: true` are not published. With no open roles the page shows an open application call to action.
 
 ### Adding a page

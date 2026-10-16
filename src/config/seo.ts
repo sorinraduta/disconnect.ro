@@ -77,12 +77,12 @@ export const seo = {
             ro: {
                 title: "Portofoliu",
                 description:
-                    "Proiecte și concepte Disconnect: website-uri, identități vizuale și campanii pentru afaceri locale și branduri în creștere.",
+                    "Proiecte Disconnect: website-uri, identități vizuale și campanii pentru afaceri locale și branduri în creștere.",
             },
             en: {
                 title: "Portfolio",
                 description:
-                    "Disconnect projects and concepts: websites, visual identities and campaigns for local businesses and growing brands.",
+                    "Disconnect projects: websites, visual identities and campaigns for local businesses and growing brands.",
             },
         },
         about: {

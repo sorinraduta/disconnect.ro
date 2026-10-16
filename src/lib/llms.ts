@@ -86,7 +86,7 @@ export const buildLlmsFullTxt = async () => {
             "",
             ...projects.map(
                 (project) =>
-                    `- [${project.data.name}](${url(projectPath(project, lang))})${project.data.concept ? " (concept)" : ""}${project.data.comingSoon ? (ro ? " (în curând)" : " (coming soon)") : ""}: ${project.data.summary[lang]}`,
+                    `- [${project.data.name}](${url(projectPath(project, lang))})${project.data.comingSoon ? (ro ? " (în curând)" : " (coming soon)") : ""}: ${project.data.summary[lang]}`,
             ),
             "",
             `## ${ro ? "Întrebări frecvente" : "Frequently asked questions"}`,

@@ -1,6 +1,5 @@
 ---
 import CtaBand from "~/components/CtaBand.astro";
-import Icon from "~/components/Icon.astro";
 import PageHero from "~/components/PageHero.astro";
 import ProjectCover from "~/components/ProjectCover.astro";
 import { alternatesFor, path, type Locale } from "~/config/routes";
@@ -24,14 +23,12 @@ const copy = {
     ro: {
         eyebrow: "Portofoliu",
         title: 'Lucrări care <span class="text-accent-text">vorbesc singure.</span>',
-        lead: "O selecție de proiecte și concepte. Fiecare pornește de la o problemă reală a unei afaceri.",
-        note: "Proiectele marcate „Concept” sunt studii de design, nu lucrări pentru clienți.",
+        lead: "O selecție de proiecte. Fiecare pornește de la o problemă reală a unei afaceri.",
     },
     en: {
         eyebrow: "Portfolio",
         title: 'Work that <span class="text-accent-text">speaks for itself.</span>',
-        lead: "A selection of projects and concepts. Each one starts from a real business problem.",
-        note: "Projects marked “Concept” are design studies, not client work.",
+        lead: "A selection of projects. Each one starts from a real business problem.",
     },
 }[lang];
 ---
@@ -62,9 +59,6 @@ const copy = {
                             class="transition-transform duration-300 group-hover:-translate-y-1.5"
                         />
                         <div class="flex flex-wrap items-center gap-2 text-sm text-muted">
-                            {project.data.concept && (
-                                <span class="rounded-full border border-line px-2 py-0.5 font-mono text-xs">{t.concept}</span>
-                            )}
                             {project.data.comingSoon && (
                                 <span class="rounded-full bg-accent px-2 py-0.5 font-mono text-xs text-accent-ink">{t.comingSoon}</span>
                             )}
@@ -88,10 +82,6 @@ const copy = {
                 ))
             }
         </ul>
-        <p class="mt-16 flex items-center gap-2 text-sm text-muted">
-            <Icon name="Info" size={16} />
-            {copy.note}
-        </p>
     </section>
 
     <CtaBand lang={lang} />

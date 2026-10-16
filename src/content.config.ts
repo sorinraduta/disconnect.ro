@@ -19,8 +19,8 @@ const blog = defineCollection({
 });
 
 /**
- * One JSON file per project, translated fields inline. Set `concept: true` for non-client work and
- * `comingSoon: true` for a project that has not launched yet. Projects with a visual in
+ * One JSON file per project, translated fields inline. Set `comingSoon: true` for a project that has
+ * not launched yet. Projects with a visual in
  * `src/components/portfolio/` show it instead of the cover generated from `colors`.
  */
 const portfolio = defineCollection({
@@ -28,7 +28,6 @@ const portfolio = defineCollection({
     schema: z.object({
         order: z.number(),
         name: z.string(),
-        concept: z.boolean().default(false),
         comingSoon: z.boolean().default(false),
         year: z.number(),
         url: z.url().optional(),

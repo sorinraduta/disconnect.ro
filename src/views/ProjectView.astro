@@ -28,25 +28,23 @@ const copy = {
     ro: {
         challenge: "Provocarea",
         solution: "Soluția",
-        results: data.concept ? "Ce livrează conceptul" : data.comingSoon ? "Unde am ajuns" : "Rezultate",
+        results: data.comingSoon ? "Unde am ajuns" : "Rezultate",
         services: "Servicii",
         industry: "Domeniu",
         year: "An",
         visit: data.comingSoon ? "Vezi pagina de lansare" : "Vezi site-ul live",
         next: "Proiectul următor",
-        conceptNote: "Acesta este un concept de design, nu o lucrare pentru un client.",
         soonNote: "Proiect în lucru: lansarea completă vine în curând.",
     },
     en: {
         challenge: "The challenge",
         solution: "The solution",
-        results: data.concept ? "What the concept delivers" : data.comingSoon ? "Where it stands" : "Results",
+        results: data.comingSoon ? "Where it stands" : "Results",
         services: "Services",
         industry: "Industry",
         year: "Year",
         visit: data.comingSoon ? "See the launch page" : "Visit the live site",
         next: "Next project",
-        conceptNote: "This is a design concept, not client work.",
         soonNote: "Work in progress: the full launch is coming soon.",
     },
 }[lang];
@@ -69,7 +67,7 @@ const copy = {
         <header class="container-x grid gap-10 pt-10 pb-12 md:pt-16 lg:grid-cols-[1.2fr_1fr] lg:items-end">
             <div class="flex flex-col gap-6">
                 <p class="eyebrow">
-                    {data.concept ? `${t.concept} · ` : ""}{data.comingSoon ? `${t.comingSoon} · ` : ""}{data.industry[lang]}
+                    {data.comingSoon ? `${t.comingSoon} · ` : ""}{data.industry[lang]}
                 </p>
                 <h1 class="display text-5xl sm:text-6xl lg:text-7xl">{data.name}</h1>
                 <p class="max-w-xl text-xl text-muted">{data.title[lang]}</p>
@@ -123,7 +121,6 @@ const copy = {
                     ))
                 }
             </ul>
-            {data.concept && <p class="mt-6 text-sm text-muted">{copy.conceptNote}</p>}
             {data.comingSoon && <p class="mt-6 text-sm text-muted">{copy.soonNote}</p>}
             {
                 data.url && (
