@@ -31,7 +31,7 @@ export const getStaticPaths = (async () => {
                 params: { slug: `${lang}/portfolio/${project.id}` },
                 props: {
                     title: `${project.data.name} — ${project.data.title[lang]}`,
-                    eyebrow: `${t.nav.portfolio}${project.data.concept ? ` · ${t.concept}` : ""}`,
+                    eyebrow: `${t.nav.portfolio}${project.data.concept ? ` · ${t.concept}` : ""}${project.data.comingSoon ? ` · ${t.comingSoon}` : ""}`,
                 },
             });
         }

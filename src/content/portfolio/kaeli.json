@@ -1,0 +1,28 @@
+{
+  "order": 3,
+  "name": "Kaeli",
+  "comingSoon": true,
+  "year": 2026,
+  "url": "https://kaeli.ro",
+  "industry": { "ro": "Accesorii sport pentru femei", "en": "Women's sports accessories" },
+  "title": { "ro": "Identitate digitală și magazin online pentru un brand de accesorii sport", "en": "A digital identity and online shop for a sports accessories brand" },
+  "summary": {
+    "ro": "Design system extras din logo, pagină de lansare bilingvă și magazinul online, în lucru. Accesorii pentru pilates, yoga, tenis și sală.",
+    "en": "A design system drawn from the logo, a bilingual launch page and the online shop, in progress. Accessories for pilates, yoga, tennis and the gym."
+  },
+  "services": ["design", "web"],
+  "colors": { "bg": "#f7e9dc", "fg": "#2a1d14", "accent": "#bb6323" },
+  "challenge": {
+    "ro": "Un brand nou, cu un logo cald, desenat dintr-o singură linie, avea nevoie de o prezență online care să-i păstreze liniștea, încă dinainte ca primul produs să fie pus în vânzare.",
+    "en": "A new brand with a warm, single-line logo needed an online presence that kept its calm, before the first product even went on sale."
+  },
+  "solution": {
+    "ro": "Am extras paleta direct din logo și am măsurat contrastul fiecărei perechi de culori, am ales tipografia (un serif înalt pentru titluri, DM Sans pentru text) și am lansat o pagină „în curând” bilingvă, cât timp construim magazinul.",
+    "en": "We sampled the palette straight from the logo and measured the contrast of every colour pair, chose the type (a tall serif for headings, DM Sans for text) and launched a bilingual “coming soon” page while we build the shop."
+  },
+  "results": [
+    { "ro": "Paletă extrasă din logo, cu contrast WCAG verificat", "en": "A palette sampled from the logo, WCAG contrast checked" },
+    { "ro": "Pagină de lansare live, în română și engleză", "en": "A live launch page in Romanian and English" },
+    { "ro": "Magazinul online, în curând", "en": "The online shop, coming soon" }
+  ]
+}

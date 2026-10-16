@@ -56,13 +56,17 @@ const copy = {
                 projects.map((project, index) => (
                     <li class:list={["reveal group relative flex flex-col gap-5", index % 2 === 1 && "md:mt-24"]}>
                         <ProjectCover
-                            name={project.data.name}
-                            colors={project.data.colors}
+                            project={project}
+                            lang={lang}
+                            priority={index === 0}
                             class="transition-transform duration-300 group-hover:-translate-y-1.5"
                         />
                         <div class="flex flex-wrap items-center gap-2 text-sm text-muted">
                             {project.data.concept && (
                                 <span class="rounded-full border border-line px-2 py-0.5 font-mono text-xs">{t.concept}</span>
+                            )}
+                            {project.data.comingSoon && (
+                                <span class="rounded-full bg-accent px-2 py-0.5 font-mono text-xs text-accent-ink">{t.comingSoon}</span>
                             )}
                             <span>{project.data.industry[lang]}</span>
                             <span aria-hidden="true">·</span>

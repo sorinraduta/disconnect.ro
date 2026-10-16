@@ -1,0 +1,34 @@
+---
+import type { Locale } from "~/config/routes";
+import type { Project } from "~/lib/content";
+import { kaeliImages, studioTeiImages } from "./portfolio/assets";
+import { HorahGallery } from "./portfolio/horah/HorahGallery";
+import { KaeliGallery } from "./portfolio/kaeli/Kaeli";
+import { StudioTeiGallery } from "./portfolio/studio-tei-29/StudioTei";
+
+interface Props {
+    project: Project;
+    lang: Locale;
+}
+
+/** Visuals from the project itself, under the case study. Renders nothing for projects without any. */
+
+const { project, lang } = Astro.props;
+const tei = project.id === "studio-tei-29" ? await studioTeiImages() : undefined;
+const kaeli = project.id === "kaeli" ? await kaeliImages(lang) : undefined;
+const hasGallery = project.id === "horah" || tei || kaeli;
+const heading = { ro: "Din proiect", en: "From the project" }[lang];
+---
+
+{
+    hasGallery && (
+        <section class="container-x pb-16 md:pb-24" aria-labelledby="gallery-title">
+            <h2 id="gallery-title" class="eyebrow mb-6">
+                {heading}
+            </h2>
+            {project.id === "horah" && <HorahGallery lang={lang} />}
+            {tei && <StudioTeiGallery lang={lang} images={tei} />}
+            {kaeli && <KaeliGallery lang={lang} images={kaeli} />}
+        </section>
+    )
+}

@@ -69,7 +69,7 @@ const copy = {
             title: "Construit pentru 100/100.",
             lead: "Viteza contează pentru Google, pentru AI și mai ales pentru clienții tăi. Fiecare site livrat țintește scorul maxim în Lighthouse și PageSpeed.",
         },
-        work: { eyebrow: "Portofoliu", title: "Lucrări și concepte", all: "Vezi tot portofoliul" },
+        work: { eyebrow: "Portofoliu", title: "Proiecte recente", all: "Vezi tot portofoliul" },
         faq: { eyebrow: "Întrebări", title: "Răspunsuri scurte", all: "Toate întrebările frecvente" },
     },
     en: {
@@ -115,7 +115,7 @@ const copy = {
             title: "Built for 100/100.",
             lead: "Speed matters for Google, for AI and above all for your customers. Every website we ship targets a perfect Lighthouse and PageSpeed score.",
         },
-        work: { eyebrow: "Portfolio", title: "Work and concepts", all: "See the full portfolio" },
+        work: { eyebrow: "Portfolio", title: "Recent work", all: "See the full portfolio" },
         faq: { eyebrow: "Questions", title: "Short answers", all: "All frequently asked questions" },
     },
 }[lang];
@@ -342,14 +342,19 @@ const highlight = new Set([0, 6, 10, 15, 22]);
                         {projects.map((project) => (
                             <li class="reveal group relative flex flex-col gap-4">
                                 <ProjectCover
-                                    name={project.data.name}
-                                    colors={project.data.colors}
+                                    project={project}
+                                    lang={lang}
                                     class="transition-transform duration-300 group-hover:-translate-y-1"
                                 />
                                 <div class="flex items-center gap-2 text-sm text-muted">
                                     {project.data.concept && (
                                         <span class="rounded-full border border-line px-2 py-0.5 font-mono text-xs">
                                             {t.concept}
+                                        </span>
+                                    )}
+                                    {project.data.comingSoon && (
+                                        <span class="rounded-full bg-accent px-2 py-0.5 font-mono text-xs text-accent-ink">
+                                            {t.comingSoon}
                                         </span>
                                     )}
                                     {project.data.industry[lang]}

@@ -1,4 +1,5 @@
 // @ts-check
+import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField, fontProviders } from "astro/config";
@@ -15,6 +16,8 @@ export default defineConfig({
     trailingSlash: "never",
     output: "static",
     adapter: vercel(),
+    // Project visuals are React components rendered at build time; none ship JavaScript.
+    integrations: [react()],
 
     build: {
         // Inline all CSS so pages have zero render-blocking requests.

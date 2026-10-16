@@ -1,0 +1,27 @@
+{
+  "order": 2,
+  "name": "Horah",
+  "year": 2026,
+  "url": "https://horah.dev",
+  "industry": { "ro": "Aplicație de calendar", "en": "Calendar app" },
+  "title": { "ro": "Un calendar criptat end-to-end, care se simte ca o aplicație nativă", "en": "An end-to-end encrypted calendar that feels like a native app" },
+  "summary": {
+    "ro": "Calendar și task-uri într-o singură aplicație web, desenată după iOS 26, sincronizată cu Google Calendar și criptată end-to-end: serverul nu poate citi nimic din ce scrii.",
+    "en": "A calendar and tasks in one web app, drawn after iOS 26, synced with Google Calendar and end-to-end encrypted: the server cannot read anything you write."
+  },
+  "services": ["web", "design", "seo"],
+  "colors": { "bg": "#000000", "fg": "#ffffff", "accent": "#94bce3" },
+  "challenge": {
+    "ro": "Calendarul și lista de task-uri stau de obicei în aplicații diferite, iar cele care le pun împreună citesc tot ce notezi. Horah trebuia să le unească, să se simtă ca o aplicație nativă pe orice telefon și să nu ceară încredere oarbă în server.",
+    "en": "A calendar and a task list usually live in different apps, and the ones that join them read everything you write. Horah had to bring them together, feel native on any phone, and never ask for blind trust in the server."
+  },
+  "solution": {
+    "ro": "O aplicație web instalabilă, cu materialul liquid glass și gesturile din iOS 26, construită pe un design system propriu. Cheia de criptare se naște pe dispozitiv din parola ta și nu pleacă de acolo. Sincronizare în ambele sensuri cu Google Calendar, remindere prin web push și o pagină publică separată, horah.dev, care nu încarcă nimic din aplicație.",
+    "en": "An installable web app with iOS 26's liquid glass material and gestures, built on its own design system. The encryption key is made on the device from your passphrase and never leaves it. Two-way Google Calendar sync, reminders over web push, and a separate public page, horah.dev, that loads nothing from the app."
+  },
+  "results": [
+    { "ro": "Criptare AES-256-GCM, cheia rămâne pe dispozitiv", "en": "AES-256-GCM encryption, the key stays on the device" },
+    { "ro": "Sincronizare în ambele sensuri cu Google Calendar", "en": "Two-way sync with Google Calendar" },
+    { "ro": "Pe telefon și desktop, fără app store", "en": "On phone and desktop, no app store" }
+  ]
+}

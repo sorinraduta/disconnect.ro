@@ -2,7 +2,7 @@
 
 <p align="center">Website for <a href="https://disconnect.ro">Disconnect</a> — a digital studio for small and mid-sized businesses.</p>
 
-Built with [Astro](https://astro.build) and Tailwind CSS. Static pages, zero JavaScript by default, one serverless function for the contact form. Targets 100 on every Lighthouse category, on mobile and desktop.
+Built with [Astro](https://astro.build) and Tailwind CSS. Static pages, zero JavaScript by default, one serverless function for the contact form. Project visuals are React components rendered at build time, so they ship no JavaScript either. Targets 100 on every Lighthouse category, on mobile and desktop.
 
 ## Getting started
 
@@ -37,6 +37,7 @@ Import the repository in Vercel. The Astro preset is detected automatically; no 
 | FAQ | `src/data/faq.ts` |
 | Blog posts | `src/content/blog/{ro,en}/*.md` |
 | Portfolio projects | `src/content/portfolio/*.json` |
+| Project visuals (covers and galleries drawn from each project) | `src/components/portfolio/` |
 | Job openings | `src/content/careers/{ro,en}/*.md` |
 | Page copy | `src/views/*View.astro` (each view holds its RO and EN text) |
 | Terms and privacy policy | `src/views/legal/` |
@@ -46,7 +47,7 @@ Empty values in `site.ts` hide the related UI: set `phone` to show click-to-call
 ### Content
 
 - **Blog:** add `src/content/blog/ro/my-post.md` and its translation in `en/`, both with the same `translationKey`. The slug comes from the file name.
-- **Portfolio:** add a JSON file to `src/content/portfolio/`. `concept: true` labels design studies that are not client work. The cover visual is generated from `colors`.
+- **Portfolio:** add a JSON file to `src/content/portfolio/`. `concept: true` labels design studies that are not client work; `comingSoon: true` labels a project that has not launched. The cover is generated from `colors`, unless the project has its own visuals in `src/components/portfolio/` (wired up in `ProjectCover.astro` and `ProjectGallery.astro`).
 - **Careers:** roles with `draft: true` are not published. With no open roles the page shows an open application call to action.
 
 ### Adding a page

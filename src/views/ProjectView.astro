@@ -2,6 +2,7 @@
 import CtaBand from "~/components/CtaBand.astro";
 import Icon from "~/components/Icon.astro";
 import ProjectCover from "~/components/ProjectCover.astro";
+import ProjectGallery from "~/components/ProjectGallery.astro";
 import { path, type Locale } from "~/config/routes";
 import { formatTitle } from "~/config/seo";
 import { services } from "~/data/services";
@@ -27,24 +28,26 @@ const copy = {
     ro: {
         challenge: "Provocarea",
         solution: "Soluția",
-        results: data.concept ? "Ce livrează conceptul" : "Rezultate",
+        results: data.concept ? "Ce livrează conceptul" : data.comingSoon ? "Unde am ajuns" : "Rezultate",
         services: "Servicii",
         industry: "Domeniu",
         year: "An",
-        visit: "Vezi site-ul live",
+        visit: data.comingSoon ? "Vezi pagina de lansare" : "Vezi site-ul live",
         next: "Proiectul următor",
         conceptNote: "Acesta este un concept de design, nu o lucrare pentru un client.",
+        soonNote: "Proiect în lucru: lansarea completă vine în curând.",
     },
     en: {
         challenge: "The challenge",
         solution: "The solution",
-        results: data.concept ? "What the concept delivers" : "Results",
+        results: data.concept ? "What the concept delivers" : data.comingSoon ? "Where it stands" : "Results",
         services: "Services",
         industry: "Industry",
         year: "Year",
-        visit: "Visit the live site",
+        visit: data.comingSoon ? "See the launch page" : "Visit the live site",
         next: "Next project",
         conceptNote: "This is a design concept, not client work.",
+        soonNote: "Work in progress: the full launch is coming soon.",
     },
 }[lang];
 ---
@@ -66,7 +69,7 @@ const copy = {
         <header class="container-x grid gap-10 pt-10 pb-12 md:pt-16 lg:grid-cols-[1.2fr_1fr] lg:items-end">
             <div class="flex flex-col gap-6">
                 <p class="eyebrow">
-                    {data.concept ? `${t.concept} · ` : ""}{data.industry[lang]}
+                    {data.concept ? `${t.concept} · ` : ""}{data.comingSoon ? `${t.comingSoon} · ` : ""}{data.industry[lang]}
                 </p>
                 <h1 class="display text-5xl sm:text-6xl lg:text-7xl">{data.name}</h1>
                 <p class="max-w-xl text-xl text-muted">{data.title[lang]}</p>
@@ -90,7 +93,7 @@ const copy = {
         </header>
 
         <div class="container-x">
-            <ProjectCover name={data.name} colors={data.colors} class="aspect-[16/10] rounded-[2rem] md:aspect-[2/1]" />
+            <ProjectCover project={project} lang={lang} priority class="aspect-[16/10] rounded-[2rem] md:aspect-[2/1]" />
         </div>
 
         <div class="container-x grid gap-12 py-16 md:grid-cols-2 md:py-24">
@@ -103,6 +106,8 @@ const copy = {
                 <p class="text-lg text-muted">{data.solution[lang]}</p>
             </section>
         </div>
+
+        <ProjectGallery project={project} lang={lang} />
 
         <section class="container-x pb-8">
             <h2 class="eyebrow">{copy.results}</h2>
@@ -119,6 +124,7 @@ const copy = {
                 }
             </ul>
             {data.concept && <p class="mt-6 text-sm text-muted">{copy.conceptNote}</p>}
+            {data.comingSoon && <p class="mt-6 text-sm text-muted">{copy.soonNote}</p>}
             {
                 data.url && (
                     <a href={data.url} class="btn btn-primary mt-8" rel="noopener" target="_blank">

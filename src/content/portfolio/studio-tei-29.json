@@ -1,0 +1,27 @@
+{
+  "order": 1,
+  "name": "Studio Tei 29",
+  "year": 2026,
+  "url": "https://studiotei29.ro",
+  "industry": { "ro": "Studio de Pilates", "en": "Pilates studio" },
+  "title": { "ro": "Un website liniștit pentru un studio de Pilates boutique", "en": "A calm website for a boutique Pilates studio" },
+  "summary": {
+    "ro": "Website bilingv cu ședințe și prețuri, profiluri de instructori, galerii foto, un blog cu studii științifice și rezervări direct în aplicația studioului.",
+    "en": "A bilingual website with sessions and pricing, instructor profiles, photo galleries, a blog of scientific studies and bookings straight into the studio's app."
+  },
+  "services": ["web", "design", "seo"],
+  "colors": { "bg": "#f6f5ec", "fg": "#303030", "accent": "#b29079" },
+  "challenge": {
+    "ro": "Un studio nou din București, cu aparate BASI și un spațiu plin de lumină, avea nevoie de un site la fel de atent ca o ședință: în română și engleză, rapid pe telefon și cu drum scurt până la rezervare.",
+    "en": "A new Bucharest studio with BASI apparatus and a space full of light needed a site as careful as a session: in Romanian and English, fast on a phone, and a short path to booking."
+  },
+  "solution": {
+    "ro": "Am construit site-ul pe identitatea studioului: tipografie fină, nuanțe calde și fotografii mari. Video în hero, o pagină pentru fiecare instructor, galerii pe albume, ghid pentru începători, blog cu rezumate de studii și PDF-uri, plus rezervarea legată direct de aplicația studioului.",
+    "en": "We built the site on the studio's identity: fine type, warm tones and large photography. A video hero, a page for every instructor, gallery albums, a beginner's guide, a blog of study summaries with PDFs, and booking wired straight into the studio's app."
+  },
+  "results": [
+    { "ro": "Site complet în română și engleză", "en": "Fully bilingual, Romanian and English" },
+    { "ro": "Rezervări direct în aplicația studioului", "en": "Bookings straight into the studio's app" },
+    { "ro": "Pagini statice și imagini optimizate, rapide pe mobil", "en": "Static pages and optimised images, fast on mobile" }
+  ]
+}
