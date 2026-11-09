@@ -1,5 +1,7 @@
 ---
 import { Font } from "astro:assets";
+import GtmBody from "~/components/analytics/GtmBody.astro";
+import GtmHead from "~/components/analytics/GtmHead.astro";
 import Breadcrumbs from "~/components/Breadcrumbs.astro";
 import CookieConsent from "~/components/CookieConsent.astro";
 import Footer from "~/components/Footer.astro";
@@ -9,6 +11,7 @@ import WhatsAppButton from "~/components/WhatsAppButton.astro";
 import type { Alternates, Locale } from "~/config/routes";
 import { seo } from "~/config/seo";
 import { useTranslations } from "~/i18n/ui";
+import { hasAnalytics } from "~/lib/analytics";
 import { organization, webPage, website, type Crumb } from "~/lib/schema";
 import "~/styles/global.css";
 
@@ -69,6 +72,7 @@ const graph = [
                 document.documentElement.dataset.theme = theme;
             })();
         </script>
+        {hasAnalytics && <GtmHead lang={lang} pageType={pageType ?? "WebPage"} />}
         {/* Both subsets render above the fold on every page (ă, ș, ț live in latin-ext), so preload both. */}
         <Font cssVariable="--font-bricolage" preload />
 
@@ -100,6 +104,7 @@ const graph = [
         <link rel="alternate" type="text/plain" title="LLMs" href="/llms.txt" />
     </head>
     <body class="flex min-h-dvh flex-col overflow-x-clip">
+        {hasAnalytics && <GtmBody />}
         <a
             href="#main"
             class="sr-only-focusable fixed top-3 left-3 z-[60] rounded-full bg-accent px-5 py-3 font-semibold text-accent-ink"
@@ -116,6 +121,6 @@ const graph = [
 
         <Footer lang={lang} alternates={alternates} />
         <WhatsAppButton lang={lang} />
-        <CookieConsent lang={lang} />
+        {hasAnalytics && <CookieConsent lang={lang} />}
     </body>
 </html>

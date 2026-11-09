@@ -265,6 +265,8 @@ const inputClass =
 </style>
 
 <script>
+    import { track, trackThen } from "~/lib/analytics";
+
     const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
 
     if (form) {
@@ -279,8 +281,13 @@ const inputClass =
         const error = form.querySelector<HTMLElement>("[data-form-error]")!;
         const idleLabel = label.textContent;
 
-        // Clear the error state as soon as a flagged field becomes valid.
+        let started_ = false;
         form.addEventListener("input", (event) => {
+            if (!started_) {
+                started_ = true;
+                track("form_start", { form_id: "contact" });
+            }
+            // Clear the error state as soon as a flagged field becomes valid.
             const field = event.target as HTMLInputElement | HTMLTextAreaElement;
             if (field.getAttribute("aria-invalid") === "true" && field.checkValidity()) {
                 field.setAttribute("aria-invalid", "false");
@@ -314,8 +321,13 @@ const inputClass =
                     headers: { Accept: "application/json" },
                 });
                 if (!response.ok) throw new Error(String(response.status));
-                window.location.assign(form.dataset.thanks!);
-            } catch {
+                const interests = Array.from(form.querySelectorAll<HTMLInputElement>("input[name=interest]:checked"), (input) => input.value);
+                // Let GTM send the lead before leaving the page.
+                trackThen("generate_lead", { form_id: "contact", interests: interests.join(", ") }, () => {
+                    window.location.assign(form.dataset.thanks!);
+                });
+            } catch (cause) {
+                track("form_error", { form_id: "contact", error_code: cause instanceof Error ? cause.message : "network" });
                 error.classList.remove("hidden");
                 error.focus();
                 button.disabled = false;

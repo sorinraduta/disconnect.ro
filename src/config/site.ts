@@ -12,7 +12,6 @@ export interface SiteConfig {
     address: { street: string; city: string; region: string; postalCode: string; country: string };
     foundingYear: number;
     socials: Record<"instagram" | "facebook" | "linkedin" | "tiktok" | "github", string>;
-    analytics: { googleAnalyticsId: string; metaPixelId: string; tiktokPixelId: string };
 }
 
 export const site: SiteConfig = {
@@ -49,16 +48,6 @@ export const site: SiteConfig = {
         tiktok: "",
         github: "https://github.com/sorinraduta",
     },
-
-    /**
-     * Tracking IDs. Scripts load only after the visitor accepts cookies,
-     * so they never affect Lighthouse scores or GDPR compliance.
-     */
-    analytics: {
-        googleAnalyticsId: "G-M6HWBY0ZB3",
-        metaPixelId: "",
-        tiktokPixelId: "",
-    },
 };
 
-export const hasAnalytics = Object.values(site.analytics).some(Boolean);
+// Tracking is handled by Google Tag Manager; its container ID is the PUBLIC_GTM_ID env variable (see src/lib/analytics.ts).

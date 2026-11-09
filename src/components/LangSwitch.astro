@@ -23,6 +23,8 @@ const href = alternates[target] ?? path("home", target);
         className,
     ]}
     data-astro-prefetch="false"
+    data-track="language_switch"
+    data-track-language-to={target}
 >
     {t.lang.short}<span class="sr-only">, {t.lang.switchTo}</span>
 </a>

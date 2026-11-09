@@ -1,0 +1,85 @@
+---
+/**
+ * GTM <noscript> fallback plus the site-wide interaction events pushed to the dataLayer:
+ * cta_click, contact_click, outbound_click, faq_open and any element with data-track.
+ * Only rendered when PUBLIC_GTM_ID is set (see Base.astro).
+ */
+import { gtmId } from "~/lib/analytics";
+---
+
+<noscript>
+    <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${encodeURIComponent(gtmId)}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="Google Tag Manager"></iframe>
+</noscript>
+
+<script>
+    import { track } from "~/lib/analytics";
+
+    const text = (el: Element) => (el.getAttribute("aria-label") || el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 100);
+
+    /** Nearest landmark around the element: its id, its heading id, or its tag name. */
+    const where = (el: Element) => {
+        const region = el.closest<HTMLElement>("section, header, footer, nav, dialog, article");
+        if (!region) return "page";
+        return region.id || region.getAttribute("aria-labelledby") || region.tagName.toLowerCase();
+    };
+
+    /** data-track-link-url="x" → { link_url: "x" } */
+    const paramsOf = (el: HTMLElement) => {
+        const params: Record<string, string> = {};
+        for (const [key, value] of Object.entries(el.dataset)) {
+            if (key === "track" || !key.startsWith("track") || value === undefined) continue;
+            params[key.slice(5).replace(/[A-Z]/g, (char, index) => (index ? "_" : "") + char.toLowerCase())] = value;
+        }
+        return params;
+    };
+
+    const isWhatsApp = (host: string) => /(^|\.)(wa\.me|whatsapp\.com)$/.test(host);
+
+    document.addEventListener("click", (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+
+        const explicit = target?.closest<HTMLElement>("[data-track]");
+        if (explicit?.dataset.track) {
+            track(explicit.dataset.track, { link_text: text(explicit), link_location: where(explicit), ...paramsOf(explicit) });
+            return;
+        }
+
+        const link = target?.closest<HTMLAnchorElement>("a[href]");
+        if (!link) return;
+        const href = link.getAttribute("href") ?? "";
+        const common = { link_text: text(link), link_location: where(link) };
+
+        if (href.startsWith("mailto:")) return track("contact_click", { contact_method: "email", ...common });
+        if (href.startsWith("tel:")) return track("contact_click", { contact_method: "phone", ...common });
+
+        let url: URL | undefined;
+        try {
+            url = new URL(link.href);
+        } catch {}
+        if (url?.protocol.startsWith("http")) {
+            if (isWhatsApp(url.hostname)) return track("contact_click", { contact_method: "whatsapp", ...common });
+            if (url.origin !== location.origin) {
+                return track("outbound_click", { link_url: url.href, link_domain: url.hostname, ...common });
+            }
+        }
+
+        // Pill buttons are the site's calls to action.
+        if (link.classList.contains("btn")) track("cta_click", { link_url: href, ...common });
+    });
+
+    // <details> toggle does not bubble, so listen in the capture phase.
+    document.addEventListener(
+        "toggle",
+        (event) => {
+            const details = event.target;
+            if (!(details instanceof HTMLDetailsElement) || !details.open || details.getAttribute("name") !== "faq") return;
+            track("faq_open", { faq_question: text(details.querySelector("summary") ?? details) });
+        },
+        true,
+    );
+</script>

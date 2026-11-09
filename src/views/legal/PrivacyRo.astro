@@ -1,9 +1,8 @@
 ---
-import { hasAnalytics, site } from "~/config/site";
+import { hasAnalytics } from "~/lib/analytics";
 import { operator } from "~/lib/legal";
 
 const op = operator();
-const { googleAnalyticsId, metaPixelId, tiktokPixelId } = site.analytics;
 ---
 
 <p>
@@ -47,9 +46,8 @@ const { googleAnalyticsId, metaPixelId, tiktokPixelId } = site.analytics;
 <ul>
     <li><strong>Vercel Inc.</strong> — găzduirea site-ului;</li>
     <li><strong>Resend</strong> — livrarea mesajelor din formularul de contact;</li>
-    {googleAnalyticsId && <li><strong>Google Ireland Ltd.</strong> — Google Analytics, doar cu acordul tău;</li>}
-    {metaPixelId && <li><strong>Meta Platforms Ireland Ltd.</strong> — Meta Pixel, doar cu acordul tău;</li>}
-    {tiktokPixelId && <li><strong>TikTok Technology Ltd.</strong> — TikTok Pixel, doar cu acordul tău;</li>}
+    {hasAnalytics && <li><strong>Google Ireland Ltd.</strong> — Google Tag Manager și Google Analytics, doar cu acordul tău pentru cookie-uri de analiză;</li>}
+    {hasAnalytics && <li><strong>Platforme de publicitate</strong> (Google Ads, Meta Platforms Ireland Ltd.) — măsurarea campaniilor, doar cu acordul tău pentru cookie-uri de marketing și doar atunci când rulăm campanii;</li>}
 </ul>
 <p>
     Unii furnizori pot prelucra date în afara Spațiului Economic European. În aceste cazuri transferul se face pe baza
@@ -59,7 +57,9 @@ const { googleAnalyticsId, metaPixelId, tiktokPixelId } = site.analytics;
 <h2>6. Cookie-uri și stocare locală</h2>
 <ul>
     <li><strong>Strict necesare:</strong> salvăm în browser preferința de temă (luminoasă/întunecată) și alegerea ta privind cookie-urile. Acestea nu te identifică și nu necesită consimțământ.</li>
-    {hasAnalytics && <li><strong>Analiză și marketing:</strong> se încarcă doar după ce apeși „Accept” în bannerul de cookie-uri. Îți poți schimba oricând alegerea din linkul „Setări cookie” din subsolul site-ului.</li>}
+    {hasAnalytics && <li><strong>Analiză:</strong> Google Analytics, activat doar dacă accepți această categorie în fereastra de cookie-uri. Măsoară paginile vizitate, durata vizitei și tipul de dispozitiv, agregat.</li>}
+    {hasAnalytics && <li><strong>Marketing:</strong> măsurarea campaniilor și reclame relevante (Google Ads, Meta), activate doar dacă accepți această categorie.</li>}
+    {hasAnalytics && <li>Instrumentele de mai sus sunt gestionate prin Google Tag Manager, care nu setează cookie-uri și nu transmite date de măsurare înainte de acordul tău (Google Consent Mode). Îți poți schimba oricând alegerea din linkul „Setări cookie” din subsolul site-ului; te întrebăm din nou după 12 luni.</li>}
 </ul>
 
 <h2>7. Drepturile tale</h2>

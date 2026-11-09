@@ -1,0 +1,61 @@
+---
+/**
+ * Google Tag Manager with Consent Mode v2, rendered in <head>.
+ * Consent defaults are read from the stored choice (same key as src/lib/consent.ts), so Google
+ * tags never have to wait for the popup; everything is denied until the visitor accepts.
+ * Only rendered when PUBLIC_GTM_ID is set (see Base.astro).
+ */
+import type { Locale } from "~/config/routes";
+import { gtmId } from "~/lib/analytics";
+
+interface Props {
+    lang: Locale;
+    /** Schema.org page type, pushed as `page_type` for every hit. */
+    pageType: string;
+}
+
+const { lang, pageType } = Astro.props;
+---
+
+<script define:vars={{ gtmId, lang, pageType }}>
+    (() => {
+        const w = window;
+        w.dataLayer = w.dataLayer || [];
+        w.gtag =
+            w.gtag ||
+            function () {
+                w.dataLayer.push(arguments);
+            };
+
+        let consent = null;
+        try {
+            const stored = JSON.parse(localStorage.getItem("cookie-consent"));
+            if (stored && stored.v === 1 && Date.now() - stored.at < 31536e6) consent = stored;
+        } catch {}
+        const analytics = consent && consent.analytics === true ? "granted" : "denied";
+        const marketing = consent && consent.marketing === true ? "granted" : "denied";
+
+        w.gtag("consent", "default", {
+            analytics_storage: analytics,
+            ad_storage: marketing,
+            ad_user_data: marketing,
+            ad_personalization: marketing,
+            personalization_storage: marketing,
+            functionality_storage: "granted",
+            security_storage: "granted",
+        });
+        w.gtag("set", "ads_data_redaction", true);
+        w.dataLayer.push({
+            page_language: lang,
+            page_type: pageType,
+            consent_analytics: analytics,
+            consent_marketing: marketing,
+        });
+
+        w.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = "https://www.googletagmanager.com/gtm.js?id=" + encodeURIComponent(gtmId);
+        document.head.appendChild(script);
+    })();
+</script>

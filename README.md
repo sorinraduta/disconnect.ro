@@ -21,6 +21,7 @@ Import the repository in Vercel. The Astro preset is detected automatically; no 
 
 | Variable | Purpose |
 | --- | --- |
+| `PUBLIC_GTM_ID` | Google Tag Manager container ID (`GTM-XXXXXXX`). Loads GTM with Consent Mode v2 and shows the cookie popup. Leave empty to ship no tracking code. See [`gtm/README.md`](gtm/README.md). |
 | `RESEND_API_KEY` | Delivers contact form messages through [Resend](https://resend.com). Without it the form still validates and filters spam, but asks visitors to email you directly. |
 | `CONTACT_TO_EMAIL` | Inbox for form messages. Defaults to `site.email`. |
 | `CONTACT_FROM_EMAIL` | Sender address; its domain must be verified in Resend. Defaults to `noreply@disconnect.ro`. |
@@ -29,7 +30,7 @@ Import the repository in Vercel. The Astro preset is detected automatically; no 
 
 | What | File |
 | --- | --- |
-| Company details, phone, WhatsApp, socials, analytics IDs | `src/config/site.ts` |
+| Company details, phone, WhatsApp, socials | `src/config/site.ts` |
 | Page titles, descriptions, keywords (SEO metadata) | `src/config/seo.ts` |
 | URLs per language | `src/config/routes.ts` |
 | Shared UI strings (menu, footer, cookies) | `src/i18n/ui.ts` |
@@ -41,6 +42,8 @@ Import the repository in Vercel. The Astro preset is detected automatically; no 
 | Job openings | `src/content/careers/{ro,en}/*.md` |
 | Page copy | `src/views/*View.astro` (each view holds its RO and EN text) |
 | Terms and privacy policy | `src/views/legal/` |
+| Cookie popup, GTM loader and dataLayer events | `src/components/CookieConsent.astro`, `src/components/analytics/`, `src/lib/analytics.ts` |
+| GTM container recipe (GA4 tags, triggers, variables) | `gtm/container.json`, documented in `gtm/README.md` |
 
 Empty values in `site.ts` hide the related UI: set `phone` to show click-to-call, `whatsapp` to show the sticky WhatsApp button, `company.*` and `address.*` to fill in the legal pages and structured data.
 
@@ -65,6 +68,7 @@ Sitemap, hreflang, Open Graph image, `llms.txt` and breadcrumbs pick it up autom
 - **Open Graph images:** generated at build time for every page, post and project (`/og/...png`).
 - **Accessibility:** semantic landmarks, skip link, visible focus, keyboard-friendly menu (native `<dialog>`), AA contrast in both themes, reduced-motion support.
 - **Dark mode:** follows the OS, with a toggle that remembers the choice.
-- **Privacy:** Google Analytics, Meta Pixel and TikTok Pixel load only after cookie consent.
+- **Analytics:** Google Tag Manager with Consent Mode v2, loaded only when `PUBLIC_GTM_ID` is set. The site pushes `cta_click`, `contact_click`, `outbound_click`, `generate_lead`, `faq_open` and more to the dataLayer; `gtm/container.json` wires them to GA4.
+- **Privacy:** cookie popup with analytics and marketing categories, consent defaults denied, tags fire only after consent. Choice stored for 12 months, changeable from the footer.
 - **Contact form:** honeypot, timing check and link filtering against spam; works without JavaScript.
 - **Icons:** `npm run icons` regenerates favicons and app icons from the logo mark.

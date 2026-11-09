@@ -56,6 +56,8 @@ export default defineConfig({
 
     env: {
         schema: {
+            // Google Tag Manager container ID (GTM-XXXXXXX). Without it no tracking code and no cookie popup ship.
+            PUBLIC_GTM_ID: envField.string({ context: "client", access: "public", optional: true }),
             RESEND_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
             CONTACT_TO_EMAIL: envField.string({ context: "server", access: "secret", optional: true }),
             CONTACT_FROM_EMAIL: envField.string({ context: "server", access: "secret", optional: true }),

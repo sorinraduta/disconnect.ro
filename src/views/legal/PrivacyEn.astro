@@ -1,9 +1,8 @@
 ---
-import { hasAnalytics, site } from "~/config/site";
+import { hasAnalytics } from "~/lib/analytics";
 import { operator } from "~/lib/legal";
 
 const op = operator();
-const { googleAnalyticsId, metaPixelId, tiktokPixelId } = site.analytics;
 ---
 
 <p>
@@ -47,9 +46,8 @@ const { googleAnalyticsId, metaPixelId, tiktokPixelId } = site.analytics;
 <ul>
     <li><strong>Vercel Inc.</strong> — website hosting;</li>
     <li><strong>Resend</strong> — delivering contact form messages;</li>
-    {googleAnalyticsId && <li><strong>Google Ireland Ltd.</strong> — Google Analytics, only with your consent;</li>}
-    {metaPixelId && <li><strong>Meta Platforms Ireland Ltd.</strong> — Meta Pixel, only with your consent;</li>}
-    {tiktokPixelId && <li><strong>TikTok Technology Ltd.</strong> — TikTok Pixel, only with your consent;</li>}
+    {hasAnalytics && <li><strong>Google Ireland Ltd.</strong> — Google Tag Manager and Google Analytics, only with your consent to analytics cookies;</li>}
+    {hasAnalytics && <li><strong>Advertising platforms</strong> (Google Ads, Meta Platforms Ireland Ltd.) — campaign measurement, only with your consent to marketing cookies and only while we run campaigns;</li>}
 </ul>
 <p>
     Some providers may process data outside the European Economic Area. In those cases transfers rely on European Commission
@@ -59,7 +57,9 @@ const { googleAnalyticsId, metaPixelId, tiktokPixelId } = site.analytics;
 <h2>6. Cookies and local storage</h2>
 <ul>
     <li><strong>Strictly necessary:</strong> we store your theme preference (light/dark) and your cookie choice in your browser. These do not identify you and do not require consent.</li>
-    {hasAnalytics && <li><strong>Analytics and marketing:</strong> loaded only after you click “Accept” in the cookie banner. You can change your choice at any time via the “Cookie settings” link in the footer.</li>}
+    {hasAnalytics && <li><strong>Analytics:</strong> Google Analytics, enabled only if you accept this category in the cookie popup. It measures pages visited, time on site and device type, in aggregate.</li>}
+    {hasAnalytics && <li><strong>Marketing:</strong> campaign measurement and relevant ads (Google Ads, Meta), enabled only if you accept this category.</li>}
+    {hasAnalytics && <li>These tools are managed through Google Tag Manager, which sets no cookies and sends no measurement data before you consent (Google Consent Mode). You can change your choice at any time via the “Cookie settings” link in the footer; we ask again after 12 months.</li>}
 </ul>
 
 <h2>7. Your rights</h2>
