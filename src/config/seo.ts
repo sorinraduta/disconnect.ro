@@ -49,16 +49,16 @@ export const seo = {
     pages: {
         home: {
             ro: {
-                title: "Disconnect — Studio digital: website, branding și marketing",
+                title: "Disconnect · Studio digital: website, branding și marketing",
                 absoluteTitle: true,
                 description:
-                    "Studio digital pentru afaceri mici și mijlocii. Website-uri rapide, branding, SEO/AEO/GEO și campanii care aduc clienți — o singură echipă, partener pe termen lung.",
+                    "Studio digital pentru afaceri mici și mijlocii. Website-uri rapide, branding, SEO/AEO/GEO și campanii care aduc clienți. O singură echipă, partener pe termen lung.",
             },
             en: {
-                title: "Disconnect — Digital studio: websites, branding & marketing",
+                title: "Disconnect · Digital studio: websites, branding & marketing",
                 absoluteTitle: true,
                 description:
-                    "Digital studio for small and mid-sized businesses. Fast websites, branding, SEO/AEO/GEO and campaigns that bring customers — one team, a long-term partner.",
+                    "Digital studio for small and mid-sized businesses. Fast websites, branding, SEO/AEO/GEO and campaigns that bring customers. One team, a long-term partner.",
             },
         },
         services: {
@@ -89,12 +89,12 @@ export const seo = {
             ro: {
                 title: "Despre noi",
                 description:
-                    "Disconnect este un studio digital: o echipă restrânsă de specialiști, implicare directă și un singur obiectiv — succesul afacerii tale.",
+                    "Disconnect este un studio digital: o echipă restrânsă de specialiști, implicare directă și un singur obiectiv: succesul afacerii tale.",
             },
             en: {
                 title: "About us",
                 description:
-                    "Disconnect is a digital studio: a small team of specialists, hands-on involvement and a single goal — the success of your business.",
+                    "Disconnect is a digital studio: a small team of specialists, hands-on involvement and a single goal: the success of your business.",
             },
         },
         blog: {
@@ -137,12 +137,12 @@ export const seo = {
             ro: {
                 title: "Contact",
                 description:
-                    "Spune-ne ce construiești. Îți răspundem în maximum o zi lucrătoare cu pașii următori — fără obligații.",
+                    "Spune-ne ce construiești. Îți răspundem în maximum o zi lucrătoare cu pașii următori, fără obligații.",
             },
             en: {
                 title: "Contact",
                 description:
-                    "Tell us what you are building. We reply within one business day with clear next steps — no strings attached.",
+                    "Tell us what you are building. We reply within one business day with clear next steps, no strings attached.",
             },
         },
         contactThanks: {
@@ -180,7 +180,7 @@ export const seo = {
     } satisfies Record<RouteKey, Record<Locale, PageMeta>>,
 
     notFound: {
-        title: "404 — Conexiune pierdută / Connection lost",
+        title: "404 · Conexiune pierdută / Connection lost",
         description: "Pagina nu există. / This page does not exist.",
     },
 };

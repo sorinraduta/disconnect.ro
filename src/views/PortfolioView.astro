@@ -68,8 +68,7 @@ const copy = {
                         </div>
                         <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
                             <a href={projectPath(project, lang)} class="after:absolute after:inset-0">
-                                {project.data.name}
-                                <span class="text-muted"> — {project.data.title[lang]}</span>
+                                {project.data.name}<span class="text-muted">: {project.data.title[lang]}</span>
                             </a>
                         </h2>
                         <p class="text-muted">{project.data.summary[lang]}</p>

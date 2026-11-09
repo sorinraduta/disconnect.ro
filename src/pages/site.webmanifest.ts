@@ -5,7 +5,7 @@ import { site } from "~/config/site";
 export const GET: APIRoute = () =>
     Response.json(
         {
-            name: `${site.name} — ${seo.tagline.ro}`,
+            name: `${site.name} · ${seo.tagline.ro}`,
             short_name: site.name,
             description: seo.pages.home.ro.description,
             lang: "ro",

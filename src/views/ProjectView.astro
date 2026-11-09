@@ -52,7 +52,7 @@ const copy = {
 
 <Base
     lang={lang}
-    title={formatTitle({ title: `${data.name} — ${data.industry[lang]}` })}
+    title={formatTitle({ title: `${data.name} · ${data.industry[lang]}` })}
     description={data.summary[lang]}
     alternates={projectAlternates(project)}
     image={`/og/${lang}/portfolio/${project.id}.png`}
